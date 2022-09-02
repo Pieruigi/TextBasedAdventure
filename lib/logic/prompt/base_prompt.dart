@@ -1,4 +1,5 @@
-import '/logic/actions/base_action.dart';
+import 'package:textual_adventure/logic/prompt/prompt_manager.dart';
+import '/logic/action/base_action.dart';
 
 
 /// This class holds all the decision you can take in a given moment.
@@ -13,7 +14,10 @@ abstract class BasePrompt
   final List<BaseAction> _actions = [];
 
   /// Constructor
-  BasePrompt(this.speech);
+  BasePrompt(this.speech){
+    // Add itself
+    PromptManager.instance.addPrompt(this);
+  }
 
   /// Add a new action
   void addAction(BaseAction value) => _actions.add(value);

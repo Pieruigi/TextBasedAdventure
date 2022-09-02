@@ -1,4 +1,5 @@
-import 'items/item.dart';
+import '../game_manager.dart';
+import 'item.dart';
 
 /// It creates and stores all the items in the game into a list.
 /// It's a singleton.
@@ -12,7 +13,8 @@ class ItemManager{
   /// Constructor
   ItemManager(){
     _instance ?? {
-      _init(),
+      GameManager.instance.registerOnGameStartCallback(clear),
+      GameManager.instance.registerOnGameStopCallback(clear),
       _instance = this
     };
   }
@@ -37,9 +39,7 @@ class ItemManager{
     _items.clear();
   }
 
-  void _init(){
-     print(itemStr);
-  }
+
 }
 
 /// This string contains all the items in order to initialize the item list.

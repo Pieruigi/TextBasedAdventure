@@ -1,9 +1,13 @@
-import '/logic/prompts/base_prompt.dart';
-import 'base_action.dart';
+import 'package:flutter/foundation.dart';
+import 'package:textual_adventure/logic/caching/cacheUtil.dart';
+import 'package:textual_adventure/logic/interfaces/i_cacheable.dart';
+
+import '/logic/prompt/base_prompt.dart';
+import '../base_action.dart';
 
 
 /// Use this action if you want to walk through door.
-class DoorAction extends BaseAction
+class DoorAction extends BaseAction with ICacheable
 {
   /// Door it unlocked, walk through
   final BasePrompt? walkThroughTarget;
@@ -73,5 +77,21 @@ class DoorAction extends BaseAction
 
     // Returns true if the door is unlocked ( this means _locked is false, so we return !_locked )
     return !_locked;
+  }
+
+  @override
+  void fromCache(String data) {
+    if (kDebugMode) {
+      print(data);
+    }
+
+    CacheConsumingResult res = consumeCache(1, data);
+    _locked = int.parse(res.values[0]) > 0 ? true : false;
+    super.fromCache(res.remainingData);
+  }
+
+  @override
+  String toCache() {
+    return appendCache([_locked ? 1.toString() : 0.toString()], super.toCache());
   }
 }

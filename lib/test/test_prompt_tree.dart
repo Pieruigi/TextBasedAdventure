@@ -1,14 +1,12 @@
-import 'package:textual_adventure/logic/actions/door_action.dart';
-import 'package:textual_adventure/logic/load_and_save_system.dart';
-
-import '../logic/action_manager.dart';
-import '../logic/inventory.dart';
-import '../logic/item_manager.dart';
-import '/logic/actions/move_action.dart';
-import '/logic/actions/base_action.dart';
-import '/logic/prompts/base_prompt.dart';
-import '/logic/prompt_manager.dart';
-import '/logic/prompts/common_prompt.dart';
+import '/logic/prompt/prompt_manager.dart';
+import '/logic/caching/load_and_save_system.dart';
+import '../logic/prompt/impl/common_prompt.dart';
+import '../logic/action/action_manager.dart';
+import '../logic/items/inventory.dart';
+import '../logic/items/item_manager.dart';
+import '/logic/prompt/base_prompt.dart';
+import '../logic/action/impl/move_action.dart';
+import '/logic/action/base_action.dart';
 
 
 String _moveNorth = 'Move north';

@@ -1,5 +1,5 @@
-import '/logic/actions/base_action.dart';
-import '/logic/prompts/base_prompt.dart';
+import '/logic/action/base_action.dart';
+import '/logic/prompt/base_prompt.dart';
 
 /// Use this class if you simply want to move in a specific direction and nothing is in your
 /// path.

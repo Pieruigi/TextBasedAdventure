@@ -1,7 +1,8 @@
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
-import 'prompts/base_prompt.dart';
+import '/logic/game_manager.dart';
+import 'base_prompt.dart';
+
 
 /// This class manages the player prompts.
 /// The current field holds the activated prompt, the one the UI is presenting to the player.
@@ -16,7 +17,13 @@ class PromptManager extends ChangeNotifier{
   BasePrompt? _current;
 
   /// Constructors
-  PromptManager(){ _instance ??= this; }
+  PromptManager(){
+    _instance ?? {
+      GameManager.instance.registerOnGameStartCallback(clear),
+      GameManager.instance.registerOnGameStopCallback(clear),
+      _instance = this
+    };
+  }
 
   set current(BasePrompt value) {
     // Set the new prompt as the current one
@@ -25,7 +32,7 @@ class PromptManager extends ChangeNotifier{
     notifyListeners();
   }
 
-  static PromptManager get instance { return _instance!; }
+  static PromptManager get instance { _instance ?? PromptManager(); return _instance!; }
 
   UnmodifiableListView<BasePrompt> get prompts => UnmodifiableListView(_prompts);
 
@@ -37,6 +44,8 @@ class PromptManager extends ChangeNotifier{
   void clear(){
     _prompts.clear();
   }
+
+
 
   @override
   String toString() {

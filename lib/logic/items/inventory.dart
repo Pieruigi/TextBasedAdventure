@@ -1,4 +1,5 @@
-import 'items/item.dart';
+import '../game_manager.dart';
+import 'item.dart';
 
 /// All the items ( medkit, weapons and objects in general ) are stored here.
 /// This class is a singleton, means you can access it calling Inventory.instance
@@ -14,8 +15,12 @@ class Inventory{
 
   /// Constructor
   Inventory(){
-    // Singleton
-    _instance ??= this;
+    _instance ??{
+      GameManager.instance.registerOnGameStartCallback(clear),
+      GameManager.instance.registerOnGameStopCallback(clear),
+      _instance == this
+    };
+
   }
 
   /// Singleton getter
@@ -43,6 +48,7 @@ class Inventory{
   void clear(){
     _itemIds.clear();
   }
+
 
   //set capacity(int value) => _capacity = value;
 }

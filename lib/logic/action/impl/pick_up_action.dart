@@ -1,7 +1,6 @@
-import 'package:textual_adventure/logic/actions/base_action.dart';
-import 'package:textual_adventure/logic/prompts/base_prompt.dart';
-import 'package:textual_adventure/logic/inventory.dart';
-import 'package:textual_adventure/logic/item_manager.dart';
+import '/logic/action/base_action.dart';
+import '/logic/prompt/base_prompt.dart';
+import '../../items/inventory.dart';
 
 /// This class represents the trigger that gives you the ability to pick up any item and store it in your
 /// inventory.

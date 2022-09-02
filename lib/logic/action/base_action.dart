@@ -1,5 +1,8 @@
-import '../prompts/base_prompt.dart';
-import '../prompt_manager.dart';
+import 'package:textual_adventure/logic/caching/cacheUtil.dart';
+
+import '/logic/prompt/prompt_manager.dart';
+import 'action_manager.dart';
+import '/logic/prompt/base_prompt.dart';
 
 
 /// Any instance of this class represents an action the player can do.
@@ -18,7 +21,10 @@ abstract class BaseAction{
   late BasePrompt _target;
 
   /// Constructor
-  BaseAction(description) : _description = description;
+  BaseAction(description) : _description = description{
+    // Add itself
+    ActionManager.instance.addAction(this);
+  }
 
   /// Implement this method in the child class.
   /// Returns the target prompt
@@ -39,12 +45,20 @@ abstract class BaseAction{
     PromptManager.instance.current = _target;
   }
 
-
   set hidden(bool value) => _hidden = value;
+
+  String toCache(){
+    return appendCache([_hidden ? 1.toString() : 0.toString()], '');
+  }
+
+  void fromCache(String data){
+    CacheConsumingResult ccr = consumeCache(1, data);
+    _hidden = int.parse(ccr.values[0]) > 0 ? true : false;
+  }
 
   @override
   String toString() {
-    // TODO: implement toString
+    
     String ret = '';
 
     ret += 'Description:$_description, Hidden:$_hidden\n';

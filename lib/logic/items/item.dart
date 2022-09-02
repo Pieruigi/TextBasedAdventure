@@ -1,5 +1,5 @@
-import 'package:textual_adventure/logic/inventory.dart';
-import 'package:textual_adventure/logic/item_manager.dart';
+import 'package:textual_adventure/logic/items/inventory.dart';
+import 'package:textual_adventure/logic/items/item_manager.dart';
 
  class Item{
 
@@ -12,7 +12,9 @@ import 'package:textual_adventure/logic/item_manager.dart';
   /// The weight
   final double weight;
 
-  Item(this.name, this.description, this.weight);
+  Item(this.name, this.description, this.weight){
+   ItemManager.instance.addItem(this);
+  }
 
 /*  /// Tries to put the item in the player inventory: returns true on succeed otherwise false ( for example if there is no
   /// room in the player inventory ).
