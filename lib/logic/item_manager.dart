@@ -7,7 +7,7 @@ class ItemManager{
   /// For singleton
   static ItemManager? _instance;
 
-  List<Item> _items = [];
+  final List<Item> _items = [];
 
   /// Constructor
   ItemManager(){
@@ -31,6 +31,10 @@ class ItemManager{
 
   int getItemIndex(Item element){
     return _items.indexOf(element);
+  }
+
+  void clear(){
+    _items.clear();
   }
 
   void _init(){

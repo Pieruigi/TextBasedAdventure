@@ -7,7 +7,7 @@ class ActionManager{
   /// For singleton
   static ActionManager? _instance;
 
-  List<BaseAction> _actions = [];
+  final List<BaseAction> _actions = [];
 
   /// Constructor
   ActionManager(){
@@ -34,6 +34,10 @@ class ActionManager{
   /// Returns the index of the given action
   int getActonIndex(BaseAction element){
     return _actions.indexOf(element);
+  }
+
+  void clear(){
+    _actions.clear();
   }
 
   void _init(){

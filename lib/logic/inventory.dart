@@ -40,5 +40,9 @@ class Inventory{
     return _itemIds.remove(itemId);
   }
 
+  void clear(){
+    _itemIds.clear();
+  }
+
   //set capacity(int value) => _capacity = value;
 }

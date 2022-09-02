@@ -1,4 +1,5 @@
 import 'package:textual_adventure/logic/actions/door_action.dart';
+import 'package:textual_adventure/logic/load_and_save_system.dart';
 
 import '../logic/action_manager.dart';
 import '../logic/inventory.dart';
@@ -16,6 +17,10 @@ String _moveEast = 'Move east';
 String _moveWest = 'Move west';
 
 void createFakeGameplay(){
+
+  _init();
+
+
 
   List<BaseAction> actions = [];
   List<BasePrompt> prompts = [];
@@ -45,6 +50,7 @@ void createFakeGameplay(){
 
 void _init(){
   // Create singleton managers
+  LoadAndSaveSystem();
   PromptManager();
   ItemManager();
   ActionManager();

@@ -10,7 +10,7 @@ class PromptManager extends ChangeNotifier{
   static PromptManager? _instance;
 
   /// All the available prompts the player can go through
-  List<BasePrompt> _prompts = [];
+  final List<BasePrompt> _prompts = [];
 
   /// The current player prompt
   BasePrompt? _current;
@@ -34,6 +34,9 @@ class PromptManager extends ChangeNotifier{
     _prompts.add(prompt);
   }
 
+  void clear(){
+    _prompts.clear();
+  }
 
   @override
   String toString() {
