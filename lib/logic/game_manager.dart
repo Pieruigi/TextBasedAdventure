@@ -25,15 +25,19 @@ class GameManager{
   /// _newGame getter
   bool get isNewGame => _newGame;
 
+  bool get isInGame => _inGame;
+
   /// This methods is called both when the player wants to start a new game or to load an existing one.
   /// The game is started and the GameMaker is called in order to create the gameplay: when the gameplay has been created
   /// the game manager looks for a save game by calling the LoadAndSaveSystem; if a save game exists the LoadAndSaveSystem.load() is
   /// called and then all the Cacher instances callbacks are called in order to initialize the objects whose state is stored
   /// in the cache.
-  Future<void> play() async{
+  Future<void> init() async{
+
+    _inGame = true;
 
     // Report all the object that registered a callback that the game is going to start ( normally you can do some cleaning here )
-    for (var func in _onGameStartCallbacks) {func.call();}
+    //for (var func in _onGameStartCallbacks) {func.call();}
 
     // Check if the player is playing a new game or if is loading a save game.
     if(await LoadAndSaveSystem.instance.saveGameExists()){
@@ -54,12 +58,13 @@ class GameManager{
     }
 
     // Start the game ( you can call the GameMaker here )
-    _startGame();
+    _create();
 
     // If is not a new game then load data in cache and init game objects
     if(!_newGame){
       await LoadAndSaveSystem.instance.load();
     }
+
 
   }
 
@@ -73,17 +78,16 @@ class GameManager{
     _onGameStopCallbacks.add(callback);
   }
 
-  void _startGame(){
-    _inGame = true;
-
+  void _create(){
     GameMaker.instance.create();
   }
 
 
-  void quitGame(){
-    _inGame = false;
+  void quit(){
 
     for(Function func in _onGameStopCallbacks) { func.call(); }
+
+    _inGame = false;
   }
 
 }

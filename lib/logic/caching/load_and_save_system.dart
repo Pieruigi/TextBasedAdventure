@@ -85,9 +85,6 @@ class LoadAndSaveSystem{
       // Decode from json to map
       _cache = jsonDecode(data);
 
-      // Debug
-      //_cache.forEach((key, value) { print("loaded => $key:$value");});
-
       // Report all the object that need to be initialized
       for (var value in _onLoadCallbacks) {
         value.call();

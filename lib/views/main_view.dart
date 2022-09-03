@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:textual_adventure/misc/constants.dart';
 import '/logic/game_manager.dart';
 import '/logic/caching/load_and_save_system.dart';
 import '/misc/themes.dart';
@@ -6,8 +7,11 @@ import '/misc/themes.dart';
 class MainView extends StatelessWidget {
   const MainView({Key? key}) : super(key: key);
 
+
+
   @override
   Widget build(BuildContext context) {
+    debugPrint('building main_view');
     return Scaffold(
       //backgroundColor: Colors.black87,
       backgroundColor: mainTheme.backgroundColor,
@@ -27,7 +31,8 @@ class MainView extends StatelessWidget {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8.0),
                       child: InkWell(
-                        onTap: ()=> _play(),
+                        //onTap: ()=> _play(),
+                        onTap: () {Navigator.of(context).pushNamed(gameRoute);},
                         child: Container(
                           width: 200,
                           height: 40,
@@ -90,12 +95,7 @@ class MainView extends StatelessWidget {
   }
 }
 
-/// Starts or continue a game
-void _play() async{
 
-  await GameManager.instance.play();
-
-}
 
 /// Shouldn't be called from here of course
 void _save() async{

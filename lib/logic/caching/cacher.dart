@@ -34,7 +34,7 @@ class Cacher{
     }
 
     LoadAndSaveSystem.instance.updateCache(_cacheName, data);
-    //'$_cacheName:$data';
+
   }
 
   void _onLoad(){
