@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:textual_adventure/logic/audio_manager.dart';
 import 'package:textual_adventure/logic/caching/cacheUtil.dart';
+import 'package:textual_adventure/logic/caching/load_and_save_system.dart';
 import 'package:textual_adventure/misc/constants.dart';
 import '/misc/themes.dart';
 import 'views/game_view.dart';
@@ -9,7 +12,20 @@ import 'views/main_view.dart';
 void main() async {
 
 
-  runApp(const MyApp());
+
+  runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => LoadAndSaveSystem())
+        ],
+        child: const MyApp(),
+      
+      )
+      
+  );
+  //(())runApp(const MyApp());
+
+
 }
 
 class MyApp extends StatelessWidget {

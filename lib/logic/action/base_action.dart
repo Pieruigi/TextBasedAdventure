@@ -17,8 +17,8 @@ abstract class BaseAction{
   /// becomes visible.
   bool _hidden = false;
 
-  /// The target the action we did is leading.
-  late BasePrompt _target;
+  /// The target prompt.
+  late BasePrompt _targetPrompt;
 
   /// Constructor
   BaseAction(description) : _description = description{
@@ -33,7 +33,7 @@ abstract class BaseAction{
   /// This method simply calls the child to perform the actual action and then updates the prompt ( the UI ).
   void doAction(){
     // Execute child method and set the target
-    _target = doActionImpl();
+    _targetPrompt = doActionImpl();
 
     // Update prompt
     _updatePrompt();
@@ -42,7 +42,7 @@ abstract class BaseAction{
   /// This method is call when the player choose this action
   void _updatePrompt(){
     // Set the current prompt
-    PromptManager.instance.current = _target;
+    PromptManager.instance.current = _targetPrompt;
   }
 
   set hidden(bool value) => _hidden = value;

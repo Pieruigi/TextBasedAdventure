@@ -4,11 +4,12 @@ import '/logic/prompt/base_prompt.dart';
 /// Use this class if you simply want to move in a specific direction and nothing is in your
 /// path.
 /// NB: to walk through a door you might want to use the DoorAction class instead.
-class MoveAction extends BaseAction{
+/// NB: you can also use move action in dialogs or descriptions.
+class CommonAction extends BaseAction{
 
   final BasePrompt _target;
 
-  MoveAction(super.description, this._target);
+  CommonAction(super.description, this._target);
 
   @override
   BasePrompt doActionImpl() {

@@ -5,7 +5,7 @@ import '../logic/action/action_manager.dart';
 import '../logic/items/inventory.dart';
 import '../logic/items/item_manager.dart';
 import '/logic/prompt/base_prompt.dart';
-import '../logic/action/impl/move_action.dart';
+import '../logic/action/impl/common_action.dart';
 import '/logic/action/base_action.dart';
 
 
@@ -36,10 +36,10 @@ void createFakeGameplay(){
   //DoorAction(DoorAction.unlocked('description', pl[0], pl[1], pl[2], pl[3], key: ))
 
   List<BaseAction> al = [];
-  al.add(MoveAction(_moveNorth, pl[1]));
-  al.add(MoveAction(_moveSouth, pl[2]));
-  al.add(MoveAction(_moveEast, pl[3]));
-  al.add(MoveAction(_moveWest, pl[4]));
+  al.add(CommonAction(_moveNorth, pl[1]));
+  al.add(CommonAction(_moveSouth, pl[2]));
+  al.add(CommonAction(_moveEast, pl[3]));
+  al.add(CommonAction(_moveWest, pl[4]));
 
   al.forEach((element) {pl[0].addAction(element); });
 

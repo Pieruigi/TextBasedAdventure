@@ -22,6 +22,7 @@ abstract class BasePrompt
   /// Add a new action
   void addAction(BaseAction value) => _actions.add(value);
 
+
   @override
   String toString() {
     // TODO: implement toString

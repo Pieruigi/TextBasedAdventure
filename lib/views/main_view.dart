@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:textual_adventure/misc/constants.dart';
-import '/logic/game_manager.dart';
+import '../logic/audio_manager.dart';
 import '/logic/caching/load_and_save_system.dart';
 import '/misc/themes.dart';
 
@@ -11,6 +12,9 @@ class MainView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    AudioManager.instance.test();
+
     debugPrint('building main_view');
     return Scaffold(
       //backgroundColor: Colors.black87,
@@ -32,7 +36,7 @@ class MainView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.0),
                       child: InkWell(
                         //onTap: ()=> _play(),
-                        onTap: () {Navigator.of(context).pushNamed(gameRoute);},
+                        onTap: () {Navigator.of(context).popAndPushNamed(gameRoute); /*pushNamed(gameRoute)*/;},
                         child: Container(
                           width: 200,
                           height: 40,
@@ -47,62 +51,120 @@ class MainView extends StatelessWidget {
 
                     ),
                     const SizedBox(height: 20),
-                    Material(
+                    const ButtonDeleteSaveGame(),
+/*                    Material(
                       elevation: 10,
-                      color: Colors.white,
+                      color: Colors.redAccent,
                       borderRadius: BorderRadius.circular(8.0),
                       child: InkWell(
-                        onTap: ()=> _save(),
+                        onTap: () => _deleteSafe(context),
                         child: Container(
                           width: 200,
                           height: 40,
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(width: 3, color: mainTheme.textTheme.button!.color!)),
                           child: Center(
-                            child: Text('Save', textAlign: TextAlign.center,  style: mainTheme.textTheme.button),
+                            child: Text('Delete', textAlign: TextAlign.center,  style: mainTheme.textTheme.button,),
                           ),
 
 
                         ),
                       ),
 
-                    ),
-                    const SizedBox(height: 20),
-                    Material(
-                      elevation: 10,
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: InkWell(
-                        onTap: ()=> _quit(),
-                        child: Container(
-                          width: 200,
-                          height: 40,
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(width: 3, color: mainTheme.textTheme.button!.color!)),
-                          child: Center(
-                            child: Text('Quit', textAlign: TextAlign.center,  style: mainTheme.textTheme.button),
-                          ),
+                    ),*/
+                    //const SizedBox(height: 20),
 
-
-                        ),
-                      ),
-
-                    )
-                    //Text('TextBasedAdventure'),
                   ]
 
             ) ,
           )
     );
   }
+
+
+
+
+  /// Shouldn't be called from here of course
+  void _delete() async{
+    await LoadAndSaveSystem.instance.delete();
+  }
+
 }
 
 
+class ButtonDeleteSaveGame extends StatefulWidget {
+  const ButtonDeleteSaveGame({Key? key}) : super(key: key);
 
-/// Shouldn't be called from here of course
-void _save() async{
-  await LoadAndSaveSystem.instance.save();
+  @override
+  State<ButtonDeleteSaveGame> createState() => _ButtonDeleteSaveGameState();
 }
 
-/// Quit the app
-void _quit(){
+class _ButtonDeleteSaveGameState extends State<ButtonDeleteSaveGame> {
+
+  @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    super.setState(fn);
+    print("changing things");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    context.watch<LoadAndSaveSystem>();
+
+    return FutureBuilder<bool>(
+      future: LoadAndSaveSystem.instance.saveGameExists(),
+      builder: ((context, snapshot) {
+        if(snapshot.hasData){
+          return       Material(
+            elevation: 10,
+            color: snapshot.data! ? Colors.redAccent : Colors.grey,
+            borderRadius: BorderRadius.circular(8.0),
+            child: InkWell(
+              onTap: () => _deleteSafe(context),
+              child: Container(
+                width: 200,
+                height: 40,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(width: 3, color: mainTheme.textTheme.button!.color!)),
+                child: Center(
+                  child: Text('Delete', textAlign: TextAlign.center,  style: mainTheme.textTheme.button,),
+                ),
+
+              ),
+            ),
+
+          );
+        }
+        else{
+          return CircularProgressIndicator();
+        }
+
+      })
+
+    );
+    
+
+  }
+
+  Future<void> _deleteSafe(BuildContext context) async{
+    bool ret = false;
+    ret = (await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Delete Save Game'),
+          content: Text('You are deleting all your progress, continue?'),
+          actions: [
+            TextButton(child: Text('Yes'), onPressed: () => Navigator.of(context).pop(true)),
+            TextButton(child: Text('No'), onPressed: () => Navigator.of(context).pop(false)),
+          ],
+        )
+    )
+    ) ?? false;
+
+    print('delete: $ret');
+
+    ret ? LoadAndSaveSystem.instance.delete() : null;
+  }
+
 
 }

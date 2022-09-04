@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
 import '/logic/game_manager.dart';
@@ -8,7 +7,7 @@ import '/logic/game_manager.dart';
 
 /// This class takes care of saving and loading stored data.
 /// Singleton.
-class LoadAndSaveSystem{
+class LoadAndSaveSystem extends ChangeNotifier{
 
     static LoadAndSaveSystem? _instance;
 
@@ -24,12 +23,15 @@ class LoadAndSaveSystem{
       _instance ?? {
         GameManager.instance.registerOnGameStartCallback(clear),
         GameManager.instance.registerOnGameStopCallback(clear),
-        _instance = this
+
+        _instance = this,
+
       };
 
     }
 
     static LoadAndSaveSystem get instance { _instance ?? LoadAndSaveSystem(); return _instance!; }
+
 
     /// Commonly used by cacher to be reported when save game has been stored
     void registerOnSaveCallback(Function callback){
@@ -40,6 +42,8 @@ class LoadAndSaveSystem{
     void registerOnLoadCallback(Function callback){
       _onLoadCallbacks.add(callback);
     }
+
+
 
     /// Adds or update a pair <key,value> in cache
     void updateCache(String key, dynamic value) => _cache[key] = value;
@@ -89,6 +93,11 @@ class LoadAndSaveSystem{
       for (var value in _onLoadCallbacks) {
         value.call();
       }
+    }
+
+    Future<void> delete() async{
+      File(await _getFilePath()).delete();
+      notifyListeners();
     }
 
     /// Writes on the file system.
