@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:textual_adventure/logic/audio/audio_manager.dart';
 import 'package:textual_adventure/misc/constants.dart';
 import 'package:textual_adventure/misc/themes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../logic/audio/audio_mixer.dart';
+import '../logic/prefs.dart';
 
 enum OptionType { musicVolume, fxVolume }
 
@@ -51,7 +53,7 @@ class ButtonBack extends StatelessWidget {
       elevation: 10,
       borderRadius: BorderRadius.circular(8.0),
       child: InkWell(
-        onTap: () => Navigator.of(context).popAndPushNamed(mainRoute),
+        onTap: () => { _savePrefs(), Navigator.of(context).popAndPushNamed(mainRoute) },
         child: Container(
           width: 200,
           height: 40,
@@ -65,6 +67,10 @@ class ButtonBack extends StatelessWidget {
 
     );
 
+  }
+
+  _savePrefs(){
+    Prefs.saveAll();
   }
 }
 
@@ -80,6 +86,13 @@ class OptionSlider extends StatefulWidget {
 class _OptionSliderState extends State<OptionSlider> {
 
   double _currentValue = 0.8;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _currentValue = (widget.optionType == OptionType.musicVolume ? Prefs.musicVolume : Prefs.fxVolume);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,10 +115,12 @@ class _OptionSliderState extends State<OptionSlider> {
   void _setOption(OptionType optionType){
     switch(optionType){
       case OptionType.musicVolume:
-        AudioManager.instance.setMusicVolume(_currentValue);
+        AudioMixer.instance.getMixerOutput(MixerOutputName.music.toString()).volume = _currentValue;
+        Prefs.musicVolume = _currentValue;
         break;
       case OptionType.fxVolume:
-        AudioManager.instance.setFxVolume(_currentValue);
+        AudioMixer.instance.getMixerOutput(MixerOutputName.fx.toString()).volume = _currentValue;
+        Prefs.fxVolume = _currentValue;
         break;
     }
   }

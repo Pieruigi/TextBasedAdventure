@@ -1,20 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:textual_adventure/logic/audio/audio_collection.dart';
-import 'package:textual_adventure/logic/audio/audio_manager.dart';
+import 'package:textual_adventure/logic/audio/audio_mixer.dart';
+import 'package:textual_adventure/logic/audio/audio_player_data.dart';
+import 'package:textual_adventure/logic/audio/audioclip.dart';
 import 'package:textual_adventure/misc/constants.dart';
+import '../logic/prefs.dart';
 import '/logic/caching/load_and_save_system.dart';
 import '/misc/themes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+AudioPlayerData? _audioPlayer;
+
 class MainView extends StatelessWidget {
   const MainView({Key? key}) : super(key: key);
+
+  void _playMusic(){
+    if(_audioPlayer ==  null || _audioPlayer!.isDisposed)  {
+      _audioPlayer = AudioPlayerData(AudioMixer.instance.getMixerOutput(MixerOutputName.music.toString()));
+    }
+
+    if(!_audioPlayer!.isPlaying){
+      _audioPlayer!.play(audioclip: Audioclip('audio/example.mp3', volume: 1), loop: true);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
 
-    AudioManager.instance.getStandardPlayer(StandardPlayerType.music).play(audioclip: AudioCollection.getMusicClipByIndex(0), loop: true);
-    
+    debugPrint('main widget');
+    //Prefs.loadAll();
+
+    //Future.delayed(const Duration(seconds: 10),() => _playMusic());
+    _playMusic();
+
     debugPrint('building main_view');
     return Scaffold(
       //backgroundColor: Colors.black87,
@@ -88,7 +106,7 @@ class ButtonPlayGame extends StatelessWidget {
               elevation: 10,
               borderRadius: BorderRadius.circular(8.0),
               child: InkWell(
-                  onTap: () {Navigator.of(context).popAndPushNamed(gameRoute);},
+                  onTap: () { _audioPlayer!.dispose(); _audioPlayer = null; Navigator.of(context).popAndPushNamed(gameRoute);},
                   child: Container(
                   width: 200,
                   height: 40,
@@ -180,6 +198,5 @@ class _ButtonDeleteSaveGameState extends State<ButtonDeleteSaveGame> {
 
     ret ? LoadAndSaveSystem.instance.delete() : null;
   }
-
-
 }
+

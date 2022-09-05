@@ -1,19 +1,24 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-
 import 'mixer_output.dart';
-import 'audio_player_data.dart';
+import '../prefs.dart';
+
+enum MixerOutputName { master , music, fx }
 
 class AudioMixer{
 
-  //static AudioMixer? _instance;
+  static AudioMixer? _instance;
 
   final List<MixerOutput> _outputs = [];
 
-  final List<AudioPlayerData> _players = [];
+  AudioMixer(){
+    _instance ?? {
+      _instance = this
+    };
 
+  }
 
-  //static AudioMixer get instance { _instance ?? AudioMixer(); return _instance!; }
+  static AudioMixer get instance { _instance ?? AudioMixer(); return _instance!; }
 
   void addMixerOutput(MixerOutput output, {List<MixerOutput> children = const []}){
     debugPrint("Adding new mixer output:$output");
@@ -36,31 +41,5 @@ class AudioMixer{
   }
 
 
-  AudioPlayerData createAudioPlayerData(MixerOutput channel, {double volume = 1}){
-    _players.add(AudioPlayerData(AudioPlayer(), channel));
-    return _players.last;
-  }
-
-  void destroyAudioPlayerData(AudioPlayerData data){
-    data.clear().whenComplete(() => _players.remove(data));
-  }
-
-  // Mute all
-  void mute(bool value, MixerOutput output){
-    // Mute the given output
-    output.muted = value;
-
-    // Reset audio players
-    for (var element in _players) {element.resetVolume();}
-  }
-
-  // Set the volume of a specific output
-  void setVolume(double value, MixerOutput output){
-    // Set the channel volume
-    output.volume = value;
-
-    // Reset audio players
-    for (var element in _players) {element.resetVolume();}
-  }
 }
 

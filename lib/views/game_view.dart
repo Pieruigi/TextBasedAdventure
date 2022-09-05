@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:textual_adventure/misc/constants.dart';
 
+import '../logic/audio/audio_player_data.dart';
 import '../logic/caching/load_and_save_system.dart';
 import '../logic/game_manager.dart';
 import '../misc/themes.dart';
+
+AudioPlayerData? _musicPlayer;
+AudioPlayerData? _ambientPlayer;
+AudioPlayerData? _fxPlayer;
 
 class GameView extends StatefulWidget {
   const GameView({Key? key}) : super(key: key);
