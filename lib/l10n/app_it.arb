@@ -1,0 +1,11 @@
+{
+    "helloWorld": "Ciao Mondo!",
+
+    "play": "Gioca",
+    "no": "No",
+    "yes": "Si",
+    "deleteSavedGame": "Cancella partita salvata",
+    "deleteSavedGameMsg": "Tutti i tuoi progressi verranno cancellati, continuare?",
+    "options": "Opzioni",
+    "back": "Indietro"
+}

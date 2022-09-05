@@ -1,0 +1,16 @@
+{
+    "helloWorld": "Hello World!",
+    "@helloWorld": {
+      "description": "The conventional newborn programmer greeting"
+    },
+
+    "play": "Play",
+    "no": "No",
+    "yes": "Yes",
+    "deleteSavedGame": "Delete saved game",
+    "deleteSavedGameMsg": "All your progress will be released, continue?",
+    "options": "Options",
+    "back": "Back"
+
+
+}

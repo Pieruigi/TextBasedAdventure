@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:textual_adventure/logic/audio/audio_collection.dart';
+import 'package:textual_adventure/logic/audio/audio_manager.dart';
 import 'package:textual_adventure/misc/constants.dart';
 import '/logic/caching/load_and_save_system.dart';
 import '/misc/themes.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainView extends StatelessWidget {
   const MainView({Key? key}) : super(key: key);
 
-
-
   @override
   Widget build(BuildContext context) {
 
+    AudioManager.instance.getStandardPlayer(StandardPlayerType.music).play(audioclip: AudioCollection.getMusicClipByIndex(0), loop: true);
+    
     debugPrint('building main_view');
     return Scaffold(
       //backgroundColor: Colors.black87,
@@ -30,6 +33,12 @@ class MainView extends StatelessWidget {
 
                      ButtonPlayGame(),
                      SizedBox(height: 20),
+                     ButtonOptions(),
+                     SizedBox(height: 20),
+                     SizedBox(height: 20),
+                     SizedBox(height: 20),
+                     SizedBox(height: 20),
+
                      ButtonDeleteSaveGame(),
 
                   ]
@@ -42,6 +51,31 @@ class MainView extends StatelessWidget {
 }
 
 
+class ButtonOptions extends StatelessWidget {
+  const ButtonOptions({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      elevation: 10,
+      borderRadius: BorderRadius.circular(8.0),
+      child: InkWell(
+        onTap: () {Navigator.of(context).popAndPushNamed(optionsRoute);},
+        child: Container(
+          width: 200,
+          height: 40,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(width: 3, color: mainTheme.textTheme.button!.color!)),
+          child: Center(
+            child: Text(AppLocalizations.of(context)!.options, textAlign: TextAlign.center,  style: mainTheme.textTheme.button,),
+          ),
+
+        ),
+      ),
+
+    );
+  }
+}
+
 
 
 class ButtonPlayGame extends StatelessWidget {
@@ -49,8 +83,6 @@ class ButtonPlayGame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    context.watch<LoadAndSaveSystem>();
 
     return Material(
               elevation: 10,
@@ -62,7 +94,7 @@ class ButtonPlayGame extends StatelessWidget {
                   height: 40,
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(width: 3, color: mainTheme.textTheme.button!.color!)),
                   child: Center(
-                    child: Text('Play', textAlign: TextAlign.center,  style: mainTheme.textTheme.button,),
+                    child: Text(AppLocalizations.of(context)!.play, textAlign: TextAlign.center,  style: mainTheme.textTheme.button,),
                   ),
 
                 ),
@@ -71,25 +103,6 @@ class ButtonPlayGame extends StatelessWidget {
             );
   }
 
-  Future<void> _deleteSafe(BuildContext context) async{
-    bool ret = false;
-    ret = (await showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Delete Save Game'),
-          content: Text('You are deleting all your progress, continue?'),
-          actions: [
-            TextButton(child: Text('Yes'), onPressed: () => Navigator.of(context).pop(true)),
-            TextButton(child: Text('No'), onPressed: () => Navigator.of(context).pop(false)),
-          ],
-        )
-    )
-    ) ?? false;
-
-    print('delete: $ret');
-
-    ret ? LoadAndSaveSystem.instance.delete() : null;
-  }
 
 
 }
@@ -109,7 +122,6 @@ class _ButtonDeleteSaveGameState extends State<ButtonDeleteSaveGame> {
   void setState(VoidCallback fn) {
     // TODO: implement setState
     super.setState(fn);
-    print("changing things");
   }
 
   @override
@@ -126,13 +138,13 @@ class _ButtonDeleteSaveGameState extends State<ButtonDeleteSaveGame> {
             color: snapshot.data! ? Colors.redAccent : Colors.grey,
             borderRadius: BorderRadius.circular(8.0),
             child: InkWell(
-              onTap: () => _deleteSafe(context),
+              onTap: () => snapshot.data! ? _delete(context) : null,
               child: Container(
                 width: 200,
                 height: 40,
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(width: 3, color: mainTheme.textTheme.button!.color!)),
                 child: Center(
-                  child: Text('Delete', textAlign: TextAlign.center,  style: mainTheme.textTheme.button,),
+                  child: Text(AppLocalizations.of(context)!.deleteSavedGame, textAlign: TextAlign.center,  style: mainTheme.textTheme.button,),
                 ),
 
               ),
@@ -141,7 +153,7 @@ class _ButtonDeleteSaveGameState extends State<ButtonDeleteSaveGame> {
           );
         }
         else{
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
 
       })
@@ -151,22 +163,20 @@ class _ButtonDeleteSaveGameState extends State<ButtonDeleteSaveGame> {
 
   }
 
-  Future<void> _deleteSafe(BuildContext context) async{
+  Future<void> _delete(BuildContext context) async{
     bool ret = false;
     ret = (await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Delete Save Game'),
-          content: Text('You are deleting all your progress, continue?'),
+          title: Text(AppLocalizations.of(context)!.deleteSavedGame),
+          content: Text(AppLocalizations.of(context)!.deleteSavedGameMsg),
           actions: [
-            TextButton(child: Text('Yes'), onPressed: () => Navigator.of(context).pop(true)),
-            TextButton(child: Text('No'), onPressed: () => Navigator.of(context).pop(false)),
+            TextButton(child: Text(AppLocalizations.of(context)!.yes), onPressed: () => Navigator.of(context).pop(true)),
+            TextButton(child: Text(AppLocalizations.of(context)!.no), onPressed: () => Navigator.of(context).pop(false)),
           ],
         )
     )
     ) ?? false;
-
-    print('delete: $ret');
 
     ret ? LoadAndSaveSystem.instance.delete() : null;
   }

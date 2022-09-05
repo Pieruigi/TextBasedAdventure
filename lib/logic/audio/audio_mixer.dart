@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
 
 import 'mixer_output.dart';
 import 'audio_player_data.dart';
@@ -11,29 +12,23 @@ class AudioMixer{
 
   final List<AudioPlayerData> _players = [];
 
-  AudioMixer(){
-    /*_instance ?? {
-      // Create the master, music and fx
-      _outputs.add(MixerOutput(String.music)),
-      _outputs.add(MixerOutput(String.fx)),
-      _outputs.add(MixerOutput(String.master, children: [_outputs[0], _outputs[1]])),
-
-      _instance = this,
-    };*/
-  }
 
   //static AudioMixer get instance { _instance ?? AudioMixer(); return _instance!; }
 
   void addMixerOutput(MixerOutput output, {List<MixerOutput> children = const []}){
+    debugPrint("Adding new mixer output:$output");
     _outputs.add(output);
-
+    debugPrint('Children.Count:${children.length}');
     // Eventually add children
     for (var value in children) {
+      debugPrint('Child:$value');
       if(!_outputs.contains(value)){
         _outputs.add(value);
       }
       output.addChild(value);
     }
+
+    debugPrint('Number of actual outputs:${_outputs.length}');
   }
 
   MixerOutput getMixerOutput(String name){
