@@ -19,7 +19,12 @@ class LoadAndSaveSystem extends ChangeNotifier{
 
     Map<String, dynamic> _cache =  {};
 
-    LoadAndSaveSystem(){
+    bool _gameSaved = false;
+
+    bool _initialized = false;
+
+    LoadAndSaveSystem._(){
+      debugPrint('Creating loadAndSaveSystem');
       _instance ?? {
         GameManager.instance.registerOnGameStartCallback(clear),
         GameManager.instance.registerOnGameStopCallback(clear),
@@ -30,8 +35,17 @@ class LoadAndSaveSystem extends ChangeNotifier{
 
     }
 
-    static LoadAndSaveSystem get instance { _instance ?? LoadAndSaveSystem(); return _instance!; }
+    static LoadAndSaveSystem get instance { _instance ?? LoadAndSaveSystem._(); return _instance!; }
 
+    bool get isGameSaved {
+      if(!_initialized){ throw Exception('LoadAndSaveSystem must be initialized first.'); }
+      return _gameSaved;
+    }
+
+    Future initialize() async{
+      _gameSaved = await _isGameSaved();
+      _initialized = true;
+    }
 
     /// Commonly used by cacher to be reported when save game has been stored
     void registerOnSaveCallback(Function callback){
@@ -60,6 +74,10 @@ class LoadAndSaveSystem extends ChangeNotifier{
     }
 
     /// Returns true if a save game exists
+    Future<bool> _isGameSaved() async{
+      return await File(await _getFilePath()).exists();
+    }
+
     Future<bool> saveGameExists() async{
       return await File(await _getFilePath()).exists();
     }
@@ -78,10 +96,15 @@ class LoadAndSaveSystem extends ChangeNotifier{
 
       _cache.forEach((key, value) {print('map => $key:$value');});
       await writeFS(jsonEncode(_cache));
+      _gameSaved = true;
     }
 
     /// Loads data
     Future<void> load() async{
+
+      if(!_gameSaved){
+        throw Exception('No save game has been found.');
+      }
 
       // Read data from file system
       String data = await readFS();
@@ -96,7 +119,10 @@ class LoadAndSaveSystem extends ChangeNotifier{
     }
 
     Future<void> delete() async{
-      File(await _getFilePath()).delete();
+      debugPrint('Deleting...');
+      await File(await _getFilePath()).delete();
+      //await Future.delayed(const Duration(seconds: 1));
+      _gameSaved = false;
       notifyListeners();
     }
 

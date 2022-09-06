@@ -13,7 +13,7 @@ class ActionManager{
   final List<BaseAction> _actions = [];
 
   /// Constructor
-  ActionManager(){
+  ActionManager._(){
     _instance ?? {
       GameManager.instance.registerOnGameStartCallback(clear),
       GameManager.instance.registerOnGameStopCallback(clear),
@@ -24,10 +24,7 @@ class ActionManager{
   }
 
 
-  static ActionManager get instance {
-    _instance ?? ActionManager();
-    return _instance!;
-  }
+  static ActionManager get instance { _instance ?? ActionManager._(); return _instance!; }
 
   /// Add a new action
   void addAction(BaseAction action){

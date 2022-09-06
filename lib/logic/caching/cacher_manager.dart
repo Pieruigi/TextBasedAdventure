@@ -9,7 +9,7 @@ class CacherManager{
 
   final List<Cacher> _cachers = [];
 
-  CacherManager(){
+  CacherManager._(){
     _instance ?? {
       GameManager.instance.registerOnGameStartCallback(clear),
       GameManager.instance.registerOnGameStopCallback(clear),
@@ -17,7 +17,7 @@ class CacherManager{
     };
   }
 
-  static get instance { _instance ?? CacherManager(); return _instance; }
+  static get instance { _instance ?? CacherManager._(); return _instance; }
 
   int getCacherIndex(Cacher cacher){
     return _cachers.indexOf(cacher);

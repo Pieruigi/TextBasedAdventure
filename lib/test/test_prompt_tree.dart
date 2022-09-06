@@ -48,10 +48,6 @@ void createFakeGameplay(){
 
 void _init(){
   // Create singleton managers
-  LoadAndSaveSystem();
-  PromptManager();
-  ItemManager();
-  ActionManager();
-  Inventory();
+
 }
 //List<BasePrompt> createPrompts()

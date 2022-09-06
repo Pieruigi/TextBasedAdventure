@@ -11,7 +11,7 @@ class ItemManager{
   final List<Item> _items = [];
 
   /// Constructor
-  ItemManager(){
+  ItemManager._(){
     _instance ?? {
       GameManager.instance.registerOnGameStartCallback(clear),
       GameManager.instance.registerOnGameStopCallback(clear),
@@ -19,11 +19,7 @@ class ItemManager{
     };
   }
 
-  static ItemManager get instance {
-    _instance ?? ItemManager();
-
-    return _instance!;
-  }
+  static ItemManager get instance { _instance ?? ItemManager._(); return _instance!; }
 
   /// Add a new item
   void addItem(Item item){

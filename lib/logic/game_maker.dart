@@ -7,13 +7,13 @@ class GameMaker{
 
   static GameMaker? _instance;
 
-  GameMaker(){
+  GameMaker._(){
     _instance ?? {
       _instance = this
     };
   }
 
-  static GameMaker get instance { _instance ?? GameMaker(); return _instance!; }
+  static GameMaker get instance { _instance ?? GameMaker._(); return _instance!; }
 
   /// This method create all the game structure ( actions, items, etc. ).
   void create(){

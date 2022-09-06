@@ -17,7 +17,7 @@ class PromptManager extends ChangeNotifier{
   BasePrompt? _current;
 
   /// Constructors
-  PromptManager(){
+  PromptManager._(){
     _instance ?? {
       GameManager.instance.registerOnGameStartCallback(clear),
       GameManager.instance.registerOnGameStopCallback(clear),
@@ -25,14 +25,14 @@ class PromptManager extends ChangeNotifier{
     };
   }
 
+  static PromptManager get instance { _instance ?? PromptManager._(); return _instance!; }
+
   set current(BasePrompt value) {
     // Set the new prompt as the current one
     _current = value;
     // Notify all the listeners
     notifyListeners();
   }
-
-  static PromptManager get instance { _instance ?? PromptManager(); return _instance!; }
 
   UnmodifiableListView<BasePrompt> get prompts => UnmodifiableListView(_prompts);
 

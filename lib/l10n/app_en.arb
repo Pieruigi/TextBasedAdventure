@@ -10,7 +10,9 @@
     "deleteSavedGame": "Delete saved game",
     "deleteSavedGameMsg": "All your progress will be released, continue?",
     "options": "Options",
-    "back": "Back"
+    "back": "Back",
+    "quitGame": "Game Quit",
+    "quitGameMsg": "Are you sure you want to quit?"
 
 
 }

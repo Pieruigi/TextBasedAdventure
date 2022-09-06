@@ -11,14 +11,14 @@ class AudioMixer{
 
   final List<MixerOutput> _outputs = [];
 
-  AudioMixer(){
+  AudioMixer._(){
     _instance ?? {
       _instance = this
     };
 
   }
 
-  static AudioMixer get instance { _instance ?? AudioMixer(); return _instance!; }
+  static AudioMixer get instance { _instance ?? AudioMixer._(); return _instance!; }
 
   void addMixerOutput(MixerOutput output, {List<MixerOutput> children = const []}){
     debugPrint("Adding new mixer output:$output");

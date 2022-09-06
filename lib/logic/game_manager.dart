@@ -6,7 +6,7 @@ import 'game_maker.dart';
 class GameManager{
   static GameManager? _instance;
 
-  GameManager(){
+  GameManager._(){
     _instance ?? {
       _instance = this
     };
@@ -20,7 +20,7 @@ class GameManager{
   bool _newGame = false; // Is the player starting a new game ?
 
 
-  static GameManager get instance {_instance ?? GameManager(); return _instance!;}
+  static GameManager get instance {_instance ?? GameManager._(); return _instance!;}
 
   /// _newGame getter
   bool get isNewGame => _newGame;
@@ -40,18 +40,18 @@ class GameManager{
     //for (var func in _onGameStartCallbacks) {func.call();}
 
     // Check if the player is playing a new game or if is loading a save game.
-    if(await LoadAndSaveSystem.instance.saveGameExists()){
-      if (kDebugMode) {
-        print('Loading an existing game');
-      }
+    //if(await LoadAndSaveSystem.instance.saveGameExists()){
+    if(LoadAndSaveSystem.instance.isGameSaved){
+
+        debugPrint('Loading an existing game');
+
 
       // It's not a new game
       _newGame = false;
     }
     else{
-      if (kDebugMode) {
-        print('Starting a new game');
-      }
+
+       debugPrint('Starting a new game');
 
       // It's a new game
       _newGame = true;

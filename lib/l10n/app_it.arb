@@ -7,5 +7,7 @@
     "deleteSavedGame": "Cancella partita salvata",
     "deleteSavedGameMsg": "Tutti i tuoi progressi verranno cancellati, continuare?",
     "options": "Opzioni",
-    "back": "Indietro"
+    "back": "Indietro",
+    "quitGame": "Abbandona Gioco",
+    "quitGameMsg": "Sicuro di voler uscire?"
 }

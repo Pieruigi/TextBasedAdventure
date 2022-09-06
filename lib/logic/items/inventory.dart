@@ -14,7 +14,7 @@ class Inventory{
   final int _capacity = 20;
 
   /// Constructor
-  Inventory(){
+  Inventory._(){
     _instance ??{
       GameManager.instance.registerOnGameStartCallback(clear),
       GameManager.instance.registerOnGameStopCallback(clear),
@@ -24,7 +24,7 @@ class Inventory{
   }
 
   /// Singleton getter
-  static Inventory get instance { _instance ?? Inventory(); return _instance!; }
+  static Inventory get instance { _instance ?? Inventory._(); return _instance!; }
 
   /// Try to add a new item
   bool add(int itemId){

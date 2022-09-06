@@ -5,8 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../logic/audio/audio_mixer.dart';
 import '../logic/prefs.dart';
-
-enum OptionType { musicVolume, fxVolume }
+import 'commons.dart';
 
 class OptionsView extends StatefulWidget {
   const OptionsView({Key? key}) : super(key: key);
@@ -19,30 +18,52 @@ class _OptionsViewState extends State<OptionsView> {
   @override
   Widget build(BuildContext context) {
 
+    return WillPopScope(
+
+       onWillPop: () { Prefs.saveAll(); Navigator.of(context).popAndPushNamed(mainRoute); return Future<bool>.value(false); },
+       child: Scaffold(
+      backgroundColor: mainTheme.backgroundColor,
+      body: const OptionBody(),
+    ),
+
+    );
+  }
+}
+
+
+
+///
+/// Custom widgets
+///
+
+class OptionBody extends StatelessWidget {
+  const OptionBody({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+
     Border border = Border.all(color: Colors.blueAccent, style: BorderStyle.solid, width: 3);
 
-    return Scaffold(
-      backgroundColor: mainTheme.backgroundColor,
-      body: Container(
-        decoration: BoxDecoration(border: border),
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            OptionSlider(optionType: OptionType.musicVolume),
-            SizedBox(height: 20),
-            OptionSlider(optionType: OptionType.fxVolume),
-            SizedBox(height: 20),
-            SizedBox(height: 20),
-            SizedBox(height: 20),
-            SizedBox(height: 20),
-            ButtonBack(),
-          ],
-        ),
+    return Container(
+      decoration: BoxDecoration(border: border),
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          OptionSlider(optionType: OptionType.musicVolume),
+          SizedBox(height: 20),
+          OptionSlider(optionType: OptionType.fxVolume),
+          SizedBox(height: 20),
+          SizedBox(height: 20),
+          SizedBox(height: 20),
+          SizedBox(height: 20),
+          ButtonBack(),
+        ],
       ),
     );
   }
 }
+
 
 class ButtonBack extends StatelessWidget {
   const ButtonBack({Key? key}) : super(key: key);
@@ -53,7 +74,7 @@ class ButtonBack extends StatelessWidget {
       elevation: 10,
       borderRadius: BorderRadius.circular(8.0),
       child: InkWell(
-        onTap: () => { _savePrefs(), Navigator.of(context).popAndPushNamed(mainRoute) },
+        onTap: () => { () => Prefs.saveAll(), Navigator.of(context).popAndPushNamed(mainRoute) },
         child: Container(
           width: 200,
           height: 40,
@@ -69,59 +90,7 @@ class ButtonBack extends StatelessWidget {
 
   }
 
-  _savePrefs(){
-    Prefs.saveAll();
-  }
+
 }
 
-class OptionSlider extends StatefulWidget {
-  const OptionSlider({Key? key, required this.optionType}) : super(key: key);
 
-  final OptionType optionType;
-
-  @override
-  State<OptionSlider> createState() => _OptionSliderState();
-}
-
-class _OptionSliderState extends State<OptionSlider> {
-
-  double _currentValue = 0.8;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _currentValue = (widget.optionType == OptionType.musicVolume ? Prefs.musicVolume : Prefs.fxVolume);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Slider(
-        value: _currentValue,
-        min: 0,
-        max: 1,
-        //divisions: 10,
-        onChanged: _onChanged
-    );
-  }
-
-  void _onChanged(double value){
-    setState(() {
-      _currentValue = value;
-      _setOption(widget.optionType);
-    });
-  }
-
-  void _setOption(OptionType optionType){
-    switch(optionType){
-      case OptionType.musicVolume:
-        AudioMixer.instance.getMixerOutput(MixerOutputName.music.toString()).volume = _currentValue;
-        Prefs.musicVolume = _currentValue;
-        break;
-      case OptionType.fxVolume:
-        AudioMixer.instance.getMixerOutput(MixerOutputName.fx.toString()).volume = _currentValue;
-        Prefs.fxVolume = _currentValue;
-        break;
-    }
-  }
-}
