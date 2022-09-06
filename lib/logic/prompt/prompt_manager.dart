@@ -13,19 +13,20 @@ class PromptManager extends ChangeNotifier{
   /// All the available prompts the player can go through
   final List<BasePrompt> _prompts = [];
 
-  /// The current player prompt
+  /// The current prompt we are just playing
   BasePrompt? _current;
 
   /// Constructors
   PromptManager._(){
     _instance ?? {
-      GameManager.instance.registerOnGameStartCallback(clear),
-      GameManager.instance.registerOnGameStopCallback(clear),
+      GameManager.instance.registerOnGameReleasedCallback(clear),
       _instance = this
     };
   }
 
   static PromptManager get instance { _instance ?? PromptManager._(); return _instance!; }
+
+  BasePrompt get current => _current!;
 
   set current(BasePrompt value) {
     // Set the new prompt as the current one
@@ -35,6 +36,10 @@ class PromptManager extends ChangeNotifier{
   }
 
   UnmodifiableListView<BasePrompt> get prompts => UnmodifiableListView(_prompts);
+
+  int getPromptIndex(BasePrompt prompt){
+    return _prompts.indexOf(prompt);
+  }
 
   /// Add a new prompt
   void addPrompt(BasePrompt prompt){

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '/logic/action/base_action.dart';
 import '/logic/prompt/base_prompt.dart';
 import '../../items/inventory.dart';
@@ -15,6 +17,7 @@ class PickUpAction extends BaseAction{
   PickUpAction(super.description, this.itemId, this.pickedUpTarget, this.failedTarget);
 
   @override
+  @protected
   BasePrompt doActionImpl() {
     return pickUp() ? pickedUpTarget : failedTarget;
   }

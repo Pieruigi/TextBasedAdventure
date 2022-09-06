@@ -15,8 +15,7 @@ class ActionManager{
   /// Constructor
   ActionManager._(){
     _instance ?? {
-      GameManager.instance.registerOnGameStartCallback(clear),
-      GameManager.instance.registerOnGameStopCallback(clear),
+      GameManager.instance.registerOnGameReleasedCallback(clear),
       _instance = this
     };
 

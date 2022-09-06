@@ -13,12 +13,12 @@ class TestSavable extends TestBaseSavable with ICacheable{
   }
 
   @override
-  void fromCache(String data) {
+  void fromCacheValue(String data) {
     //print('fromCache:$data');
   }
 
   @override
-  String toCache() {
+  String toCacheValue() {
     // TODO: implement toCache
     return '0x112|berry|12.4';
   }

@@ -39,6 +39,7 @@ class DoorAction extends BaseAction with ICacheable
   /// Action implementation.
   /// We try to unlock the door if it is locked, otherwise we walk through.
   @override
+  @protected
   BasePrompt doActionImpl() {
     // True if we are using a key
     bool usingKey = _equippedKey != null ? true : false;
@@ -80,18 +81,18 @@ class DoorAction extends BaseAction with ICacheable
   }
 
   @override
-  void fromCache(String data) {
+  void fromCacheValue(String data) {
     if (kDebugMode) {
       print(data);
     }
 
     CacheConsumingResult res = consumeCache(1, data);
     _locked = int.parse(res.values[0]) > 0 ? true : false;
-    super.fromCache(res.remainingData);
+    super.fromCacheValue(res.remainingData);
   }
 
   @override
-  String toCache() {
-    return appendCache([_locked ? 1.toString() : 0.toString()], super.toCache());
+  String toCacheValue() {
+    return appendCache([_locked ? 1.toString() : 0.toString()], super.toCacheValue());
   }
 }

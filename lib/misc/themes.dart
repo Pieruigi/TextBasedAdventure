@@ -29,5 +29,5 @@ final commonPromptTheme = ThemeData(
       fontFamily: 'courier_new',
       fontSize: 28,
       fontWeight: FontWeight.w500,
-      color: Colors.black54,
+      color: Colors.white60,
     )));

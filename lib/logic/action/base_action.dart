@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:textual_adventure/logic/caching/cacheUtil.dart';
+import 'package:textual_adventure/logic/interfaces/i_cacheable.dart';
 
 import '/logic/prompt/prompt_manager.dart';
 import 'action_manager.dart';
@@ -7,7 +9,7 @@ import '/logic/prompt/base_prompt.dart';
 
 /// Any instance of this class represents an action the player can do.
 /// For example: open the door, take the gun, look around, speak with Peter and so on.
-abstract class BaseAction{
+abstract class BaseAction with ICacheable{
 
   /// A short description telling the player what is going to do.
   final String _description;
@@ -26,9 +28,13 @@ abstract class BaseAction{
     ActionManager.instance.addAction(this);
   }
 
+  String get description => _description;
+
   /// Implement this method in the child class.
   /// Returns the target prompt
+  @protected
   BasePrompt doActionImpl();
+
 
   /// This method simply calls the child to perform the actual action and then updates the prompt ( the UI ).
   void doAction(){
@@ -47,11 +53,13 @@ abstract class BaseAction{
 
   set hidden(bool value) => _hidden = value;
 
-  String toCache(){
+  @override
+  String toCacheValue(){
     return appendCache([_hidden ? 1.toString() : 0.toString()], '');
   }
 
-  void fromCache(String data){
+  @override
+  void fromCacheValue(String data){
     CacheConsumingResult ccr = consumeCache(1, data);
     _hidden = int.parse(ccr.values[0]) > 0 ? true : false;
   }

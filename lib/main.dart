@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:textual_adventure/logic/prompt/prompt_manager.dart';
 import '/logic/caching/load_and_save_system.dart';
 import '/misc/constants.dart';
 import 'views/initialization_view.dart';
@@ -18,8 +19,7 @@ Future main() async{
   runApp(
         MultiProvider(
           providers: [
-            //Provider(create: create)
-            //ChangeNotifierProvider(create: (context) => Initializer()),
+            ChangeNotifierProvider(create: (context) => PromptManager.instance),
             ChangeNotifierProvider(create: (context) => LoadAndSaveSystem.instance)
           ],
           child: const MyApp(),

@@ -15,8 +15,6 @@ class LoadAndSaveSystem extends ChangeNotifier{
 
     final List<Function> _onSaveCallbacks = [];
 
-    final List<Function> _onLoadCallbacks = [];
-
     Map<String, dynamic> _cache =  {};
 
     bool _gameSaved = false;
@@ -26,11 +24,8 @@ class LoadAndSaveSystem extends ChangeNotifier{
     LoadAndSaveSystem._(){
       debugPrint('Creating loadAndSaveSystem');
       _instance ?? {
-        GameManager.instance.registerOnGameStartCallback(clear),
-        GameManager.instance.registerOnGameStopCallback(clear),
-
+        GameManager.instance.registerOnGameReleasedCallback(clear),
         _instance = this,
-
       };
 
     }
@@ -42,6 +37,8 @@ class LoadAndSaveSystem extends ChangeNotifier{
       return _gameSaved;
     }
 
+    bool get isCacheEmpty => _cache.isEmpty;
+
     Future initialize() async{
       _gameSaved = await _isGameSaved();
       _initialized = true;
@@ -51,13 +48,6 @@ class LoadAndSaveSystem extends ChangeNotifier{
     void registerOnSaveCallback(Function callback){
       _onSaveCallbacks.add(callback);
     }
-
-    /// Commonly used by cachers to be reported when save game has loaded
-    void registerOnLoadCallback(Function callback){
-      _onLoadCallbacks.add(callback);
-    }
-
-
 
     /// Adds or update a pair <key,value> in cache
     void updateCache(String key, dynamic value) => _cache[key] = value;
@@ -70,7 +60,6 @@ class LoadAndSaveSystem extends ChangeNotifier{
     void clear(){
       _cache.clear();
       _onSaveCallbacks.clear();
-      _onLoadCallbacks.clear();
     }
 
     /// Returns true if a save game exists
@@ -78,9 +67,9 @@ class LoadAndSaveSystem extends ChangeNotifier{
       return await File(await _getFilePath()).exists();
     }
 
-    Future<bool> saveGameExists() async{
+/*    Future<bool> saveGameExists() async{
       return await File(await _getFilePath()).exists();
-    }
+    }*/
 
     /// Stores data
     Future<void> save() async{
@@ -102,6 +91,8 @@ class LoadAndSaveSystem extends ChangeNotifier{
     /// Loads data
     Future<void> load() async{
 
+      debugPrint('Loading saved game...');
+
       if(!_gameSaved){
         throw Exception('No save game has been found.');
       }
@@ -112,10 +103,7 @@ class LoadAndSaveSystem extends ChangeNotifier{
       // Decode from json to map
       _cache = jsonDecode(data);
 
-      // Report all the object that need to be initialized
-      for (var value in _onLoadCallbacks) {
-        value.call();
-      }
+      debugPrint('Loading completed');
     }
 
     Future<void> delete() async{

@@ -1,7 +1,7 @@
 abstract class ICacheable{
   /// Get data from cache
-  void fromCache(String data);
+  void fromCacheValue(String data);
 
   /// Set data in cache
-  String toCache();
+  String toCacheValue();
 }

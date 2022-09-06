@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:textual_adventure/logic/prompt/base_prompt.dart';
+import 'package:textual_adventure/logic/prompt/prompt_manager.dart';
 import 'package:textual_adventure/misc/constants.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../logic/audio/audio_player_data.dart';
@@ -21,25 +24,12 @@ class GameView extends StatefulWidget {
 
 class _GameViewState extends State<GameView> {
 
-  bool _initialized = false;
-
-  void _initGame() {
-    GameManager.instance.init().whenComplete(() => { setState(() {
-      debugPrint("initialization completed");
-      _initialized = true;
-    })});
-  }
-
   //const GameView({Key? key}) : super(key: key);
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    debugPrint("Initializing game view state");
-    // initState() is called the first time every time the game view is created
-    _initGame();
-
+    GameManager.instance.initGame();
   }
 
   @override
@@ -55,6 +45,20 @@ class _GameViewState extends State<GameView> {
           noText: AppLocalizations.of(context)!.no,
         );},
         child: const GameViewBody(),
+        /*FutureBuilder(
+          //future: GameManager.instance.initGame(),
+            builder: (context, snapshot) {
+              //if(snapshot.hasData){
+              if(true){
+                _initialized = true;
+                return const GameViewBody();
+              }
+              else{
+                return const LinearProgressIndicator();
+              }
+            },
+        )*/
+
 
     );
   }
@@ -70,8 +74,10 @@ class GameViewBody extends StatelessWidget {
     debugPrint('building game_view');
 
     return  Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      //mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: const [
+        PromptView(),
         ButtonQuit(),
         SizedBox(height: 20),
         TestButtonUpdate(),
@@ -83,17 +89,67 @@ class GameViewBody extends StatelessWidget {
   }
 }
 
-
+///
+/// Common functions
+///
+void _quit(BuildContext context){
+  GameManager.instance.releaseGame();
+  Navigator.of(context).popAndPushNamed(mainRoute);
+}
 
 void _save() async{
   await LoadAndSaveSystem.instance.save();
 }
 
 
-
 ///
 /// Custom widgets
 ///
+/// Prompt widget
+/// This widget handle prompt objects
+///
+class PromptView extends StatefulWidget {
+  const PromptView({Key? key}) : super(key: key);
+
+  @override
+  State<PromptView> createState() => _PromptViewState();
+}
+
+class _PromptViewState extends State<PromptView> {
+  @override
+  Widget build(BuildContext context) {
+
+    BasePrompt prompt = context.watch<PromptManager>().current;
+
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        children: [
+
+          SizedBox(
+            width: 600,
+            height: 250,
+            child: Text(prompt.speech, style: commonPromptTheme.textTheme.headline1,),
+          ),
+          ListView.builder(
+            itemCount: prompt.actionCount,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return TextButton(
+                    onPressed: () => prompt.getActionByIndex(index).doAction(),
+                    child: Text(prompt.getActionByIndex(index).description),
+                );
+              },
+          )
+        ],
+      ),
+    )
+
+      ;
+  }
+}
+
+
 class ButtonQuit extends StatefulWidget {
   const ButtonQuit({Key? key}) : super(key: key);
 
@@ -124,16 +180,6 @@ class _ButtonQuitState extends State<ButtonQuit> {
 
     );
   }
-}
-
-///
-/// Common functions
-///
-void _quit(BuildContext context){
-  GameManager.instance.quit();
-
-  Navigator.of(context).popAndPushNamed(mainRoute);
-
 }
 
 

@@ -62,7 +62,7 @@ class _InitializationViewState extends State<InitializationView> {
     // Load preferences
     await Prefs.loadAll();
 
-    // Init save game sysstem
+    // Init save game system
     await LoadAndSaveSystem.instance.initialize();
     // Create a simple mixer
     _initializeSimpleMixer();

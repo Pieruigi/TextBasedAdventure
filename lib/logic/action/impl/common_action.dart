@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '/logic/action/base_action.dart';
 import '/logic/prompt/base_prompt.dart';
 
@@ -12,8 +14,10 @@ class CommonAction extends BaseAction{
   CommonAction(super.description, this._target);
 
   @override
+  @protected
   BasePrompt doActionImpl() {
     return _target;
   }
+
 
 }

@@ -13,8 +13,7 @@ class ItemManager{
   /// Constructor
   ItemManager._(){
     _instance ?? {
-      GameManager.instance.registerOnGameStartCallback(clear),
-      GameManager.instance.registerOnGameStopCallback(clear),
+      GameManager.instance.registerOnGameReleasedCallback(clear),
       _instance = this
     };
   }

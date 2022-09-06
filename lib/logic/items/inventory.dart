@@ -1,9 +1,11 @@
+import '../caching/cacheUtil.dart';
 import '../game_manager.dart';
+import '../interfaces/i_cacheable.dart';
 import 'item.dart';
 
 /// All the items ( medkit, weapons and objects in general ) are stored here.
 /// This class is a singleton, means you can access it calling Inventory.instance
-class Inventory{
+class Inventory with ICacheable{
 
   static Inventory? _instance;
 
@@ -16,8 +18,7 @@ class Inventory{
   /// Constructor
   Inventory._(){
     _instance ??{
-      GameManager.instance.registerOnGameStartCallback(clear),
-      GameManager.instance.registerOnGameStopCallback(clear),
+      GameManager.instance.registerOnGameReleasedCallback(clear),
       _instance == this
     };
 
@@ -47,6 +48,16 @@ class Inventory{
 
   void clear(){
     _itemIds.clear();
+  }
+
+  @override
+  void fromCacheValue(String data) {
+    consumeCache(data.split(cacheSeparator).length, data);
+  }
+
+  @override
+  String toCacheValue() {
+    return appendCache(_itemIds, null);
   }
 
 

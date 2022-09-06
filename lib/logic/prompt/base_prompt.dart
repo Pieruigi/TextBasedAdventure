@@ -1,3 +1,5 @@
+import 'package:textual_adventure/logic/caching/load_and_save_system.dart';
+import 'package:textual_adventure/logic/game_manager.dart';
 import 'package:textual_adventure/logic/prompt/prompt_manager.dart';
 import '/logic/action/base_action.dart';
 
@@ -15,6 +17,11 @@ abstract class BasePrompt
 
   /// Constructor
   BasePrompt(this.speech){
+
+    // Register callbacks
+    GameManager.instance.registerOnGameInitializedCallback(_init);
+    GameManager.instance.registerOnGameReleasedCallback(_clear);
+
     // Add itself
     PromptManager.instance.addPrompt(this);
   }
@@ -22,6 +29,25 @@ abstract class BasePrompt
   /// Add a new action
   void addAction(BaseAction value) => _actions.add(value);
 
+  int get actionCount => _actions.length;
+
+  BaseAction getActionByIndex(int index){
+    return _actions[index];
+  }
+
+  void _init(){
+    if(LoadAndSaveSystem.instance.isCacheEmpty){
+      PromptManager.instance.getPromptIndex(this) == 0 ? PromptManager.instance.current = this : (){};
+    }
+    else{
+      // InitByCache()
+    }
+  }
+
+  void _clear(){
+    GameManager.instance.unregisterOnGameInitializedCallback(_init);
+    GameManager.instance.unregisterOnGameReleasedCallback(_clear);
+  }
 
   @override
   String toString() {

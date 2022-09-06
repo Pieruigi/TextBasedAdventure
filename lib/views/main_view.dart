@@ -1,8 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:textual_adventure/logic/audio/audio_mixer.dart';
 import 'package:textual_adventure/logic/audio/audio_player_data.dart';
 import 'package:textual_adventure/logic/audio/audioclip.dart';
+import 'package:textual_adventure/logic/game_manager.dart';
 import 'package:textual_adventure/misc/constants.dart';
 import '/logic/caching/load_and_save_system.dart';
 import '/misc/themes.dart';
@@ -41,6 +44,60 @@ class MainView extends StatelessWidget {
 
   } // Main View
 
+
+}
+
+///
+/// Common functions
+///
+///
+/// Set _playMusic true if you want to play music on the menu
+AudioPlayerData? _musicPlayer;
+const bool _playMusic = false;
+const String _clipPath = 'audio/example.mp3';
+
+void _initMusicPlayerAndPlay(){
+  if(_musicPlayer ==  null || _musicPlayer!.isDisposed)  {
+    _musicPlayer = AudioPlayerData(AudioMixer.instance.getMixerOutput(MixerOutputName.music.toString()));
+  }
+
+  if(!_musicPlayer!.isPlaying){
+    _musicPlayer!.play(audioclip: Audioclip(_clipPath, volume: 1), loop: true);
+  }
+}
+
+void _stopAndDisposeMusicPlayer(){
+  if(!_playMusic){
+    return;
+  }
+  _musicPlayer!.dispose();
+  _musicPlayer = null;
+}
+
+void _deleteSaveGame(BuildContext context){
+  messageBox(
+      context: context,
+      title: AppLocalizations.of(context)!.deleteSavedGame,
+      content: AppLocalizations.of(context)!.deleteSavedGameMsg,
+      yesText: AppLocalizations.of(context)!.yes,
+      noText: AppLocalizations.of(context)!.no,
+      yesFunc: () => { LoadAndSaveSystem.instance.delete() },
+      noFunc: () => {}
+      );
+}
+
+Future _play(BuildContext context) async{
+  _stopAndDisposeMusicPlayer();
+  if(LoadAndSaveSystem.instance.isGameSaved){
+    await LoadAndSaveSystem.instance.load().whenComplete(() => {Navigator.of(context).popAndPushNamed(gameRoute)});
+  }
+  else{
+    Navigator.of(context).popAndPushNamed(gameRoute);
+  }
+
+}
+
+void _loadGameView(BuildContext context){
 
 }
 
@@ -126,7 +183,7 @@ class ButtonPlayGame extends StatelessWidget {
       elevation: 10,
       borderRadius: BorderRadius.circular(8.0),
       child: InkWell(
-        onTap: () => { _stopAndDisposeMusicPlayer(), Navigator.of(context).popAndPushNamed(gameRoute) },
+        onTap: () => _play(context),
         child: Container(
           width: 200,
           height: 40,
@@ -140,6 +197,8 @@ class ButtonPlayGame extends StatelessWidget {
 
     );
   }
+
+
 }
 
 ///
@@ -183,44 +242,4 @@ class _ButtonDeleteSaveGameState extends State<ButtonDeleteSaveGame> {
   }
 
 
-}
-
-///
-/// Utilities
-///
-
-///
-/// Set _playMusic true if you want to play music on the menu
-AudioPlayerData? _musicPlayer;
-const bool _playMusic = false;
-const String _clipPath = 'audio/example.mp3';
-
-void _initMusicPlayerAndPlay(){
-  if(_musicPlayer ==  null || _musicPlayer!.isDisposed)  {
-    _musicPlayer = AudioPlayerData(AudioMixer.instance.getMixerOutput(MixerOutputName.music.toString()));
-  }
-
-  if(!_musicPlayer!.isPlaying){
-    _musicPlayer!.play(audioclip: Audioclip(_clipPath, volume: 1), loop: true);
-  }
-}
-
-void _stopAndDisposeMusicPlayer(){
-  if(!_playMusic){
-    return;
-  }
-  _musicPlayer!.dispose();
-  _musicPlayer = null;
-}
-
-void _deleteSaveGame(BuildContext context){
-  messageBox(
-      context: context,
-      title: AppLocalizations.of(context)!.deleteSavedGame,
-      content: AppLocalizations.of(context)!.deleteSavedGameMsg,
-      yesText: AppLocalizations.of(context)!.yes,
-      noText: AppLocalizations.of(context)!.no,
-      yesFunc: () => { LoadAndSaveSystem.instance.delete() },
-      noFunc: () => {}
-      );
 }
