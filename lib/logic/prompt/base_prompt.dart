@@ -9,6 +9,11 @@ import '/logic/action/base_action.dart';
 /// A prompt has a text to describe the actual situation and a list of actions.
 abstract class BasePrompt
 {
+  // Called entering this prompt
+  final List<Function(BasePrompt)> _onPromptEnterCallbacks = [];
+  // Called exiting this prompt
+  final List<Function(BasePrompt)> _onPromptExitCallbacks = [];
+
   /// A voice-over describing the current scene.
   final String speech;
 
@@ -35,8 +40,6 @@ abstract class BasePrompt
     PromptManager.instance.addPrompt(this);
   }
 
-
-
   /// Add a new action
   void addAction(BaseAction value) => _actions.add(value);
 
@@ -59,9 +62,35 @@ abstract class BasePrompt
     }
   }
 
+  void enter(){
+
+    for (var element in _onPromptEnterCallbacks) {element.call(this);}
+  }
+
+  void exit(){
+
+    for (var element in _onPromptExitCallbacks) {element.call(this);}
+  }
+
   void _clear(){
     GameManager.instance.unregisterOnGameInitializedCallback(_init);
     GameManager.instance.unregisterOnGameReleasedCallback(_clear);
+  }
+
+  void registerOnPromptExitCallback(Function(BasePrompt) callback){
+    _onPromptExitCallbacks.add(callback);
+  }
+
+  void registerOnPromptEnterCallback(Function(BasePrompt) callback){
+    _onPromptEnterCallbacks.add(callback);
+  }
+
+  void unregisterOnPromptExitCallback(Function(BasePrompt) callback){
+    _onPromptExitCallbacks.remove(callback);
+  }
+
+  void unregisterOnPromptEnterCallback(Function(BasePrompt) callback){
+    _onPromptEnterCallbacks.remove(callback);
   }
 
   @override

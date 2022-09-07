@@ -8,6 +8,8 @@ import 'base_prompt.dart';
 /// The current field holds the activated prompt, the one the UI is presenting to the player.
 class PromptManager extends ChangeNotifier{
 
+
+
   static PromptManager? _instance;
 
   /// All the available prompts the player can go through
@@ -29,8 +31,16 @@ class PromptManager extends ChangeNotifier{
   BasePrompt get current => _current!;
 
   set current(BasePrompt value) {
+
+    // Call exit on the old prompt
+    _current?.exit();
+
     // Set the new prompt as the current one
     _current = value;
+
+    // Call enter on the new prompt
+    _current!.enter();
+
     // Notify all the listeners
     notifyListeners();
   }

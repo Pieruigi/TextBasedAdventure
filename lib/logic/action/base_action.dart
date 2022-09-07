@@ -30,6 +30,9 @@ abstract class BaseAction with ICacheable{
 
   String get description => _description;
 
+  set hidden(bool value) => _hidden = value;
+
+
   /// Implement this method in the child class.
   /// Returns the target prompt
   @protected
@@ -51,7 +54,7 @@ abstract class BaseAction with ICacheable{
     PromptManager.instance.current = _targetPrompt;
   }
 
-  set hidden(bool value) => _hidden = value;
+
 
   @override
   String toCacheValue(){
