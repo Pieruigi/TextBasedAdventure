@@ -32,9 +32,11 @@ class DoorAction extends BaseAction with ICacheable
 
   /// Constructors
   /// The unlocked constructor needs only the walkThroughTarget prompt
-  DoorAction.unlocked(super.description, this.walkThroughTarget, {this.key, this.hasBeenUnlockedTarget, this.failedToUnlockTarget, this.isLockedTarget}) : _locked = false;
+  //DoorAction.unlocked(description, this.walkThroughTarget, {this.key, this.hasBeenUnlockedTarget, this.failedToUnlockTarget, this.isLockedTarget}) : _locked = false, super(description: description);
+  DoorAction.unlocked({required description, required this.walkThroughTarget, this.key, this.hasBeenUnlockedTarget, this.failedToUnlockTarget, this.isLockedTarget}) : _locked = false, super(description: description);
   /// The locked constructor needs at least the isLockedTarget prompt
-  DoorAction.locked(super.description, this.isLockedTarget, {this.key, this.walkThroughTarget, this.hasBeenUnlockedTarget, this.failedToUnlockTarget }) : _locked = true;
+  //DoorAction.locked(description, this.isLockedTarget, {this.key, this.walkThroughTarget, this.hasBeenUnlockedTarget, this.failedToUnlockTarget }) : _locked = true, super(description: description);
+  DoorAction.locked({required description, required this.isLockedTarget, this.key, this.walkThroughTarget, this.hasBeenUnlockedTarget, this.failedToUnlockTarget }) : _locked = true, super(description: description);
 
   /// Action implementation.
   /// We try to unlock the door if it is locked, otherwise we walk through.

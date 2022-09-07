@@ -21,7 +21,8 @@ class GameManager{
   static GameManager get instance {_instance ?? GameManager._(); return _instance!;}
 
   /// Game initialization
-  Future initGame() async{
+  void initGame(){
+    debugPrint('Init Game');
     // Call the game maker
     GameMaker.instance.create();
 

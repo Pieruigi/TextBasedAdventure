@@ -1,6 +1,5 @@
 {
-    "helloWorld": "Ciao Mondo!",
-
+"@_#############################################_MENU_#############################################": {},
     "play": "Gioca",
     "no": "No",
     "yes": "Si",
@@ -9,5 +8,7 @@
     "options": "Opzioni",
     "back": "Indietro",
     "quitGame": "Abbandona Gioco",
-    "quitGameMsg": "Sicuro di voler uscire?"
+    "quitGameMsg": "Sicuro di voler uscire?",
+
+"@_#############################################_GAME_#############################################": {}
 }

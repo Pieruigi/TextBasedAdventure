@@ -18,30 +18,11 @@ void createFakeGameplay(){
 
   _init();
 
+CommonPrompt(
+    speech: 'Pippo'
 
+);
 
-  List<BaseAction> actions = [];
-  List<BasePrompt> prompts = [];
-
-
-
-  List<BasePrompt> pl = [];
-  pl.add(CommonPrompt('Your adventure starts here.'));
-  pl.add(CommonPrompt('You moved north.'));
-  pl.add(CommonPrompt('You moved south.'));
-  pl.add(CommonPrompt('You moved east.'));
-  pl.add(CommonPrompt('You moved west.'));
-  prompts = pl;
-
-  //DoorAction(DoorAction.unlocked('description', pl[0], pl[1], pl[2], pl[3], key: ))
-
-  List<BaseAction> al = [];
-  al.add(CommonAction(_moveNorth, pl[1]));
-  al.add(CommonAction(_moveSouth, pl[2]));
-  al.add(CommonAction(_moveEast, pl[3]));
-  al.add(CommonAction(_moveWest, pl[4]));
-
-  al.forEach((element) {pl[0].addAction(element); });
 
 
 }

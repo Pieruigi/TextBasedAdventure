@@ -12,7 +12,11 @@ import 'package:textual_adventure/logic/items/item_manager.dart';
   /// The weight
   final double weight;
 
-  Item(this.name, this.description, this.weight){
+/*  Item(this.name, this.description, this.weight){
+   ItemManager.instance.addItem(this);
+  }*/
+
+  Item({required this.name, this.description = '', this.weight = 0}) {
    ItemManager.instance.addItem(this);
   }
 

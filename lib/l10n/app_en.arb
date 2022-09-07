@@ -1,9 +1,5 @@
 {
-    "helloWorld": "Hello World!",
-    "@helloWorld": {
-      "description": "The conventional newborn programmer greeting"
-    },
-
+"@_#############################################_MENU_#############################################": {},
     "play": "Play",
     "no": "No",
     "yes": "Yes",
@@ -12,7 +8,9 @@
     "options": "Options",
     "back": "Back",
     "quitGame": "Game Quit",
-    "quitGameMsg": "Are you sure you want to quit?"
+    "quitGameMsg": "Are you sure you want to quit?",
 
+
+"@_#############################################_GAME_#############################################": {}
 
 }

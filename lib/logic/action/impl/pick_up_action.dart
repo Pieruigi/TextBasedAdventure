@@ -9,17 +9,18 @@ import '../../items/inventory.dart';
 class PickUpAction extends BaseAction{
 
   final BasePrompt pickedUpTarget;
-  final BasePrompt failedTarget;
+  final BasePrompt? failedTarget;
 
   /// The id of the item you can pick up
   final int itemId;
 
-  PickUpAction(super.description, this.itemId, this.pickedUpTarget, this.failedTarget);
+  //PickUpAction(description, this.itemId, this.pickedUpTarget, this.failedTarget) : super(description: description);
+  PickUpAction({required description, required this.itemId, required this.pickedUpTarget, this.failedTarget}) : super(description: description);
 
   @override
   @protected
   BasePrompt doActionImpl() {
-    return pickUp() ? pickedUpTarget : failedTarget;
+    return pickUp() ? pickedUpTarget : failedTarget!;
   }
 
   /// Tries to put the item in the player inventory: returns true on succeed otherwise false ( for example if there is no

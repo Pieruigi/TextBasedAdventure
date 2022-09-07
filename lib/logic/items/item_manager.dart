@@ -30,6 +30,10 @@ class ItemManager{
     return _items.indexOf(element);
   }
 
+  int getLastItemIndex(){
+    return _items.indexOf(_items.last);
+  }
+
   void clear(){
     _items.clear();
   }

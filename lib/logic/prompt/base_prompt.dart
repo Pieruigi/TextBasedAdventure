@@ -13,11 +13,20 @@ abstract class BasePrompt
   final String speech;
 
   /// All the actions the player can take in this particular prompt; every action always will lead the player to another prompt.
-  final List<BaseAction> _actions = [];
+  final List<BaseAction> _actions;
 
   /// Constructor
-  BasePrompt(this.speech){
+/*  BasePrompt(this.speech){
 
+    // Register callbacks
+    GameManager.instance.registerOnGameInitializedCallback(_init);
+    GameManager.instance.registerOnGameReleasedCallback(_clear);
+
+    // Add itself
+    PromptManager.instance.addPrompt(this);
+  }*/
+
+  BasePrompt({required this.speech, List<BaseAction> actions = const [] }) : _actions = actions {
     // Register callbacks
     GameManager.instance.registerOnGameInitializedCallback(_init);
     GameManager.instance.registerOnGameReleasedCallback(_clear);
@@ -26,6 +35,8 @@ abstract class BasePrompt
     PromptManager.instance.addPrompt(this);
   }
 
+
+
   /// Add a new action
   void addAction(BaseAction value) => _actions.add(value);
 
@@ -33,6 +44,10 @@ abstract class BasePrompt
 
   BaseAction getActionByIndex(int index){
     return _actions[index];
+  }
+
+  void addActionAll(List<BaseAction> actions){
+    _actions.addAll(actions);
   }
 
   void _init(){

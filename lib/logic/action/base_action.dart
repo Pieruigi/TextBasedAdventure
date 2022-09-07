@@ -23,7 +23,7 @@ abstract class BaseAction with ICacheable{
   late BasePrompt _targetPrompt;
 
   /// Constructor
-  BaseAction(description) : _description = description{
+  BaseAction({required description}) : _description = description{
     // Add itself
     ActionManager.instance.addAction(this);
   }
