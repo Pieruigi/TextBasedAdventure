@@ -1,14 +1,11 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:textual_adventure/logic/audio/audio_mixer.dart';
-import 'package:textual_adventure/logic/audio/audio_player_data.dart';
-import 'package:textual_adventure/logic/audio/audioclip.dart';
-import 'package:textual_adventure/logic/game_manager.dart';
-import 'package:textual_adventure/misc/constants.dart';
+import '/logic/audio/audio_mixer.dart';
+import '/logic/audio/audio_player_data.dart';
+import '/logic/audio/audioclip.dart';
+import '../main.dart';
 import '/logic/caching/load_and_save_system.dart';
-import '/misc/themes.dart';
+import 'misc/themes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'commons.dart';
 

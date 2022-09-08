@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:textual_adventure/logic/prompt/base_prompt.dart';
-import 'package:textual_adventure/logic/prompt/prompt_manager.dart';
-import 'package:textual_adventure/misc/constants.dart';
+import '/logic/prompt/base_prompt.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../logic/audio/audio_player_data.dart';
 import '../logic/caching/load_and_save_system.dart';
 import '../logic/game_manager.dart';
-import '../misc/themes.dart';
+import '../logic/prompt/prompt_notifier.dart';
+import '../main.dart';
+import 'misc/themes.dart';
 import 'commons.dart';
 
 AudioPlayerData? _musicPlayer;
@@ -119,7 +119,7 @@ class _PromptViewState extends State<PromptView> {
   @override
   Widget build(BuildContext context) {
 
-    BasePrompt prompt = context.watch<PromptManager>().current;
+    BasePrompt prompt = context.watch<PromptNotifier>().current;
 
     return Container(
       padding: const EdgeInsets.all(10),

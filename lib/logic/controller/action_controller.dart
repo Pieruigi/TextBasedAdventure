@@ -1,15 +1,12 @@
-
-import 'dart:convert';
-
-import 'package:textual_adventure/logic/action/base_action.dart';
-import 'package:textual_adventure/logic/controller/controller_manager.dart';
-import 'package:textual_adventure/logic/interfaces/i_clearable.dart';
-
-import '../prompt/base_prompt.dart';
+import '/logic/action/base_action.dart';
+import '/logic/game_manager.dart';
+import '/logic/prompt/base_prompt.dart';
 
 /// This class map actions to a prompt in a way that you can activate or deactivate actions when the player enters or exits a specific
 /// prompt ( for example when you enter the prompt after you picked a key you can enable the action "use the key" to open a door.
-class ActionController with IClearable{
+class ActionController{
+
+  static final List<ActionController> _list = [];
 
   /// The list of actions you want to activate when you enter or exit the prompt
   final List<BaseAction>? activatingList;
@@ -33,8 +30,10 @@ class ActionController with IClearable{
     if(activatingList == null && deactivatingList == null){ throw Exception('Both the activating and the deactivating lists are null in the action controller.'); }
     if(!triggerOnEnter && !triggerOnExit){ throw Exception('Both on enter and on exit triggers are null in the action controller'); }
 
+    GameManager.instance.registerOnGameReleasedCallback(_clear);
+
     // Add to the controller manager
-    ControllerManager.instance.addController(this);
+    _list.add(this);
 
     // Register callbacks
     if(triggerOnEnter){
@@ -71,10 +70,10 @@ class ActionController with IClearable{
     }
   }
 
-  @override
-  void clear(){
+
+  void _clear(){
     if(triggerOnEnter) {prompt.unregisterOnPromptEnterCallback((p0) => _onEnter);}
     if(triggerOnExit) { prompt.unregisterOnPromptExitCallback((p0) => _onExit);}
-    ControllerManager.instance.removeController(this);
+    _list.remove(this);
   }
 }

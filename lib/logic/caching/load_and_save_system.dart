@@ -24,7 +24,7 @@ class LoadAndSaveSystem extends ChangeNotifier{
     LoadAndSaveSystem._(){
       debugPrint('Creating loadAndSaveSystem');
       _instance ?? {
-        GameManager.instance.registerOnGameReleasedCallback(clear),
+        GameManager.instance.registerOnGameReleasedCallback(_clear),
         _instance = this,
       };
 
@@ -44,9 +44,14 @@ class LoadAndSaveSystem extends ChangeNotifier{
       _initialized = true;
     }
 
+
     /// Commonly used by cacher to be reported when save game has been stored
     void registerOnSaveCallback(Function callback){
       _onSaveCallbacks.add(callback);
+    }
+
+    void unregisterOnSaveCallback(Function callback){
+      _onSaveCallbacks.remove(callback);
     }
 
     /// Adds or update a pair <key,value> in cache
@@ -57,9 +62,9 @@ class LoadAndSaveSystem extends ChangeNotifier{
     dynamic getFromCache(String key) => _cache[key];
 
     /// Clear everything
-    void clear(){
+    void _clear(){
       _cache.clear();
-      _onSaveCallbacks.clear();
+      //_onSaveCallbacks.clear();
     }
 
     /// Returns true if a save game exists

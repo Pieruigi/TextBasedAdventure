@@ -18,7 +18,7 @@ class Inventory with ICacheable{
   /// Constructor
   Inventory._(){
     _instance ??{
-      GameManager.instance.registerOnGameReleasedCallback(clear),
+      GameManager.instance.registerOnGameReleasedCallback(_clear),
       _instance == this
     };
 
@@ -46,7 +46,7 @@ class Inventory with ICacheable{
     return _itemIds.remove(itemId);
   }
 
-  void clear(){
+  void _clear(){
     _itemIds.clear();
   }
 

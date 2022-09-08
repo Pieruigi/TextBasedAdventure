@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:textual_adventure/misc/constants.dart';
 import '../logic/audio/audio_mixer.dart';
 import '../logic/audio/mixer_output.dart';
 import '../logic/caching/load_and_save_system.dart';
 import '../logic/prefs.dart';
-import 'main_view.dart';
+import '../main.dart';
 
 class InitializationView extends StatefulWidget {
   const InitializationView({Key? key}) : super(key: key);

@@ -1,4 +1,21 @@
 {
+"@_#############################################_PROMPT_EXAMPLE_#############################################": {},
+    "pMsg1": "Ti trovi in una stanza, hai davanti a te una porta e a destra una scrivania.",
+    "pMsg2": "Una massiccia porta di legno.",
+    "pMsg3": "La porta è chiusa a chiave.",
+
+"@_#############################################_ACTION_EXAMPLE_#############################################": {},
+    "aMsg1": "Vai verso la porta.",
+    "aMsg2": "Vai verso la scrivania.",
+    "aMsg3": "Oltrepassi la porta.",
+    "aMsg4": "Provi ad aprire la porta.",
+    "aMsg5": "Usi la chiave.",
+    "aMsg6": "Torni indietro.",
+    "aMsg7": "Insisti.",
+    "aMsg8": "Lasci perdere.",
+
+
+
 "@_#############################################_MENU_#############################################": {},
     "play": "Gioca",
     "no": "No",

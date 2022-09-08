@@ -7,7 +7,9 @@ import '../logic/prefs.dart';
 
 enum OptionType { musicVolume, fxVolume }
 
+///
 /// A message box to choose between actions
+///
 Future<bool> messageBox({ required BuildContext context, required String title, required String content, required String yesText, required String noText, required Function yesFunc, required Function noFunc }) async{
   bool result = (await showDialog(
     context: context,

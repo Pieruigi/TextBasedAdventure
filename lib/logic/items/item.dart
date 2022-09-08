@@ -1,7 +1,8 @@
-import 'package:textual_adventure/logic/items/inventory.dart';
-import 'package:textual_adventure/logic/items/item_manager.dart';
+import '/logic/game_manager.dart';
 
  class Item{
+
+  static final List<Item> _list = [];
 
   /// The name of the item
   final String name;
@@ -13,8 +14,37 @@ import 'package:textual_adventure/logic/items/item_manager.dart';
   final double weight;
 
   Item({required this.name, this.description = '', this.weight = 0}) {
-   ItemManager.instance.addItem(this);
+   GameManager.instance.registerOnGameReleasedCallback(_clear);
+   _list.add(this);
   }
+
+
+  ///
+  /// Static methods
+  ///
+  /// Add a new item in the list
+  static void addItem(Item item){
+   _list.add(item);
+  }
+
+  static int getItemIndex(Item element){
+   return _list.indexOf(element);
+  }
+
+  static int getLastItemIndex(){
+   return _list.indexOf(_list.last);
+  }
+
+  ///
+  /// Non static methods
+  ///
+
+  void _clear(){
+   _list.remove(this);
+  }
+
+
+
 
 /*  /// Tries to put the item in the player inventory: returns true on succeed otherwise false ( for example if there is no
   /// room in the player inventory ).

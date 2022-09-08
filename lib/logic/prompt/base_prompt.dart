@@ -1,6 +1,6 @@
-import 'package:textual_adventure/logic/caching/load_and_save_system.dart';
-import 'package:textual_adventure/logic/game_manager.dart';
-import 'package:textual_adventure/logic/prompt/prompt_manager.dart';
+import '/logic/caching/load_and_save_system.dart';
+import '/logic/game_manager.dart';
+import '/logic/prompt/prompt_notifier.dart';
 import '/logic/action/base_action.dart';
 
 
@@ -9,6 +9,11 @@ import '/logic/action/base_action.dart';
 /// A prompt has a text to describe the actual situation and a list of actions.
 abstract class BasePrompt
 {
+  static final List<BasePrompt> _list = [];
+
+  // The prompt currently active
+  static BasePrompt? _current;
+
   // Called entering this prompt
   final List<Function(BasePrompt)> _onPromptEnterCallbacks = [];
   // Called exiting this prompt
@@ -21,29 +26,46 @@ abstract class BasePrompt
   final List<BaseAction> _actions;
 
   /// Constructor
-/*  BasePrompt(this.speech){
-
-    // Register callbacks
-    GameManager.instance.registerOnGameInitializedCallback(_init);
-    GameManager.instance.registerOnGameReleasedCallback(_clear);
-
-    // Add itself
-    PromptManager.instance.addPrompt(this);
-  }*/
-
   BasePrompt({required this.speech, List<BaseAction> actions = const [] }) : _actions = actions {
     // Register callbacks
-    GameManager.instance.registerOnGameInitializedCallback(_init);
+    GameManager.instance.registerOnGameBuiltCallback(_init);
     GameManager.instance.registerOnGameReleasedCallback(_clear);
+    // Add to the list
+    _list.add(this);
 
-    // Add itself
-    PromptManager.instance.addPrompt(this);
   }
 
-  /// Add a new action
-  void addAction(BaseAction value) => _actions.add(value);
+  BasePrompt get current => _current!;
 
   int get actionCount => _actions.length;
+
+  ///
+  /// Static methods
+  ///
+  static setCurrent(BasePrompt value) {
+
+    // Call exit on the old prompt
+    _current?.exit();
+
+    // Set the new prompt as the current one
+    _current = value;
+
+    // Call enter on the new prompt
+    _current!.enter();
+
+    PromptNotifier.instance.notify(_current!);
+
+  }
+
+  static int getPromptIndex(BasePrompt prompt){
+    return _list.indexOf(prompt);
+  }
+
+  ///
+  /// Non static methods
+  ///
+  /// Add a new action
+  void addAction(BaseAction value) => _actions.add(value);
 
   BaseAction getActionByIndex(int index){
     return _actions[index];
@@ -55,7 +77,7 @@ abstract class BasePrompt
 
   void _init(){
     if(LoadAndSaveSystem.instance.isCacheEmpty){
-      PromptManager.instance.getPromptIndex(this) == 0 ? PromptManager.instance.current = this : (){};
+      _list.indexOf(this) == 0 ? setCurrent(this) : (){};
     }
     else{
       // InitByCache()
@@ -70,11 +92,6 @@ abstract class BasePrompt
   void exit(){
 
     for (var element in _onPromptExitCallbacks) {element.call(this);}
-  }
-
-  void _clear(){
-    GameManager.instance.unregisterOnGameInitializedCallback(_init);
-    GameManager.instance.unregisterOnGameReleasedCallback(_clear);
   }
 
   void registerOnPromptExitCallback(Function(BasePrompt) callback){
@@ -93,10 +110,14 @@ abstract class BasePrompt
     _onPromptEnterCallbacks.remove(callback);
   }
 
+  void _clear(){
+    _list.remove(this);
+  }
+
   @override
   String toString() {
     // TODO: implement toString
-    String ret = '';
+    String ret = '[PromptList Length:${_list.length}]';
 
     ret += 'Speech:$speech\n';
 

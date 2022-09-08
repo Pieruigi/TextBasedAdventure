@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
-import 'package:textual_adventure/logic/caching/cacher_manager.dart';
-import 'package:textual_adventure/logic/interfaces/i_cacheable.dart';
-import '../game_manager.dart';
+import '/logic/interfaces/i_cacheable.dart';
+import '/logic/game_manager.dart';
 import '/logic/caching/load_and_save_system.dart';
 
 class Cacher{
+
+  static final List<Cacher> _list = [];
 
   late String _cacheName;
 
@@ -12,21 +13,33 @@ class Cacher{
 
   Cacher(this._cacheable, {String? cacheName}){
     LoadAndSaveSystem.instance.registerOnSaveCallback(_onSave);
-    GameManager.instance.registerOnGameInitializedCallback(_tryReadFromCache);
+    GameManager.instance.registerOnGameBuiltCallback(_tryReadFromCache);
     GameManager.instance.registerOnGameReleasedCallback(_clear);
 
     // Adds itself to the cache
-    CacherManager.instance.addCacher(this);
+    _list.add(this);
 
+    // The cache name
     if(cacheName != null){
       _cacheName = cacheName;
     }
-    else{
-      _cacheName = CacherManager.instance.getCacherIndex(this).toString();
+    else{ // Suggested
+      _cacheName = getCacherIndex(this).toString();
     }
+
 
   }
 
+  ///
+  /// Static methods
+  ///
+  static int getCacherIndex(Cacher cacher){
+    return _list.indexOf(cacher);
+  }
+
+  ///
+  /// Non static methods
+  ///
   /// Gets data from the cacheable object.
   void _onSave(){
     // We need to get specific data from the child
@@ -49,8 +62,8 @@ class Cacher{
   }
 
   void _clear(){
-    GameManager.instance.unregisterOnGameInitializedCallback(_tryReadFromCache);
-    GameManager.instance.unregisterOnGameReleasedCallback(_clear);
+    LoadAndSaveSystem.instance.unregisterOnSaveCallback(_onSave);
+    _list.remove(this);
   }
 
 }

@@ -1,11 +1,10 @@
 import 'action_model.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 class ActionModelCollection{
 
-  final List<ActionModel>? actions;
+  final List<ActionModel>? elemente;
 
-  ActionModelCollection(this.actions);
+  ActionModelCollection(this.elemente);
 
   factory ActionModelCollection.fromJson(Map<String, dynamic> json) =>
      ActionModelCollection(
@@ -14,14 +13,14 @@ class ActionModelCollection{
      ) ;
 
   Map<String,dynamic> toJson() => <String,dynamic>{
-    'actions' : actions
+    'actions' : elemente
   };
 
   @override
   String toString() {
     // TODO: implement toString
-    String ret = "[ActionModelCollection Count:${actions!.length}]";
-    for (var element in actions!) {ret += '\n${element.toString()}';}
+    String ret = "[ActionModelCollection Count:${elemente!.length}]";
+    for (var element in elemente!) {ret += '\n${element.toString()}';}
     return ret;
   }
 }

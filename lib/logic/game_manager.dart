@@ -1,14 +1,12 @@
 import 'package:flutter/foundation.dart';
-import 'package:textual_adventure/logic/caching/cacher_manager.dart';
-import 'caching/load_and_save_system.dart';
-import 'game_maker.dart';
+import 'builder/game_maker.dart';
 
 
 class GameManager{
   static GameManager? _instance;
 
   /// Register objects to perform some action after the game has been initialized ( for example to load data from the cache )
-  final List<Function> _onGameInitializedCallbacks = [];
+  final List<Function> _onGameBuiltCallbacks = [];
   /// Register objects to perform action on game released ( for example to clear data )
   final List<Function> _onGameReleasedCallbacks = [];
 
@@ -26,28 +24,33 @@ class GameManager{
     // Call the game maker
     GameMaker.instance.create();
 
-    for (var element in _onGameInitializedCallbacks) {element.call();}
+
+    for (var element in _onGameBuiltCallbacks) {element.call();}
   }
 
 
   void releaseGame(){
+    // Call callbacks
     for (var element in _onGameReleasedCallbacks) {element.call();}
+    // Clear callbacks
+    _onGameBuiltCallbacks.clear();
+    _onGameReleasedCallbacks.clear();
   }
 
-  void registerOnGameInitializedCallback(Function callback){
-    _onGameInitializedCallbacks.add(callback);
+  void registerOnGameBuiltCallback(Function callback){
+    _onGameBuiltCallbacks.add(callback);
   }
 
   void registerOnGameReleasedCallback(Function callback){
     _onGameReleasedCallbacks.add(callback);
   }
 
-  void unregisterOnGameInitializedCallback(Function callback){
+/*  void unregisterOnGameInitializedCallback(Function callback){
     _onGameInitializedCallbacks.remove(callback);
   }
 
   void unregisterOnGameReleasedCallback(Function callback){
     _onGameReleasedCallbacks.remove(callback);
-  }
+  }*/
 
 }

@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:textual_adventure/logic/prompt/prompt_manager.dart';
 import '/logic/caching/load_and_save_system.dart';
-import '/misc/constants.dart';
-import 'test/test_json.dart';
+import 'logic/prompt/prompt_notifier.dart';
 import 'views/initialization_view.dart';
 import 'views/options_view.dart';
-import 'misc/themes.dart';
+import 'views/misc/themes.dart';
 import '/views/game_view.dart';
 import 'views/main_view.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Future main() async{
+///
+/// Routes
+///
+const String mainRoute = '/main';
+const String gameRoute = '/game';
+const String optionsRoute = '/options';
+const String initializationRoute = '/initialization';
+
+void main(){
 
   runApp(
         MultiProvider(
           providers: [
-            ChangeNotifierProvider(create: (context) => PromptManager.instance),
+            ChangeNotifierProvider(create: (context) => PromptNotifier.instance),
             ChangeNotifierProvider(create: (context) => LoadAndSaveSystem.instance)
           ],
           child: const MyApp(),

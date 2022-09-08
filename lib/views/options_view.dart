@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:textual_adventure/misc/constants.dart';
-import 'package:textual_adventure/misc/themes.dart';
+import 'misc/themes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '../logic/audio/audio_mixer.dart';
 import '../logic/prefs.dart';
+import '../main.dart';
 import 'commons.dart';
 
 class OptionsView extends StatefulWidget {

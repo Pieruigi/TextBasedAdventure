@@ -41,10 +41,6 @@ class ActionModel{
         break;
     }
 
-    if(type == 'common') {
-      descriptionLocale = json['descriptionLocale'];
-    }
-
   }
 
   Map<String, dynamic> toJson() => {

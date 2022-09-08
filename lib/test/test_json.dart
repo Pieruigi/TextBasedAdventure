@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:textual_adventure/logic/models/action_model.dart';
-import 'package:textual_adventure/logic/models/action_model_collection.dart';
+import '/logic/builder/models/action_model.dart';
+import '/logic/builder/models/action_model_collection.dart';
 
 class TestJson{
 
