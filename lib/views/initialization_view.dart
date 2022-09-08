@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../logic/audio/audio_mixer.dart';
 import '../logic/audio/mixer_output.dart';
-import '../logic/caching/load_and_save_system.dart';
+import '../logic/caching/chaching_system.dart';
 import '../logic/prefs.dart';
 import '../main.dart';
 
@@ -61,7 +61,7 @@ class _InitializationViewState extends State<InitializationView> {
     await Prefs.loadAll();
 
     // Init save game system
-    await LoadAndSaveSystem.instance.initialize();
+    await CachingSystem.instance.initialize();
     // Create a simple mixer
     _initializeSimpleMixer();
   }

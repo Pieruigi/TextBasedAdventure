@@ -4,4 +4,7 @@ abstract class ICacheable{
 
   /// Set data in cache
   String toCacheValue();
+
+  /// Report the object is not in cache ( standard initialization )
+  void notInCache();
 }

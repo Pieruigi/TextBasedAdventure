@@ -4,7 +4,7 @@ import '/logic/audio/audio_mixer.dart';
 import '/logic/audio/audio_player_data.dart';
 import '/logic/audio/audioclip.dart';
 import '../main.dart';
-import '/logic/caching/load_and_save_system.dart';
+import '/logic/caching/chaching_system.dart';
 import 'misc/themes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'commons.dart';
@@ -78,15 +78,16 @@ void _deleteSaveGame(BuildContext context){
       content: AppLocalizations.of(context)!.deleteSavedGameMsg,
       yesText: AppLocalizations.of(context)!.yes,
       noText: AppLocalizations.of(context)!.no,
-      yesFunc: () => { LoadAndSaveSystem.instance.delete() },
+      yesFunc: () => { CachingSystem.instance.delete() },
       noFunc: () => {}
       );
 }
 
 Future _play(BuildContext context) async{
   _stopAndDisposeMusicPlayer();
-  if(LoadAndSaveSystem.instance.isGameSaved){
-    await LoadAndSaveSystem.instance.load().whenComplete(() => {Navigator.of(context).popAndPushNamed(gameRoute)});
+  CachingSystem.instance.clear();
+  if(CachingSystem.instance.isGameSaved){
+    await CachingSystem.instance.load().whenComplete(() => {Navigator.of(context).popAndPushNamed(gameRoute)});
   }
   else{
     Navigator.of(context).popAndPushNamed(gameRoute);
@@ -214,14 +215,14 @@ class _ButtonDeleteSaveGameState extends State<ButtonDeleteSaveGame> {
   Widget build(BuildContext context) {
 
     debugPrint('Build delete button');
-    context.watch<LoadAndSaveSystem>();
+    context.watch<CachingSystem>();
 
     return Material(
       elevation: 10,
-      color: LoadAndSaveSystem.instance.isGameSaved ? Colors.redAccent : Colors.grey,
+      color: CachingSystem.instance.isGameSaved ? Colors.redAccent : Colors.grey,
       borderRadius: BorderRadius.circular(8.0),
       child: InkWell(
-        onTap: () => LoadAndSaveSystem.instance.isGameSaved ? _deleteSaveGame(context) : null,
+        onTap: () => CachingSystem.instance.isGameSaved ? _deleteSaveGame(context) : null,
         child: Container(
           width: 200,
           height: 40,

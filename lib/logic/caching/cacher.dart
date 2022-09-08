@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import '/logic/interfaces/i_cacheable.dart';
 import '/logic/game_manager.dart';
-import '/logic/caching/load_and_save_system.dart';
+import '/logic/caching/chaching_system.dart';
 
 class Cacher{
 
@@ -12,7 +12,7 @@ class Cacher{
   final ICacheable _cacheable;
 
   Cacher(this._cacheable, {String? cacheName}){
-    LoadAndSaveSystem.instance.registerOnSaveCallback(_onSave);
+    CachingSystem.instance.registerOnSaveCallback(_onSave);
     GameManager.instance.registerOnGameBuiltCallback(_tryReadFromCache);
     GameManager.instance.registerOnGameReleasedCallback(_clear);
 
@@ -48,21 +48,22 @@ class Cacher{
       print('$_cacheName:$data');
     }
 
-    LoadAndSaveSystem.instance.updateCache(_cacheName, data);
+    CachingSystem.instance.updateCache(_cacheName, data);
 
   }
 
   void _tryReadFromCache(){
-    String? data = LoadAndSaveSystem.instance.getFromCache(_cacheName);
-
+    String? data = CachingSystem.instance.getFromCache(_cacheName);
     if(data != null){
       _cacheable.fromCacheValue(data);
     }
-
+    else{
+      _cacheable.notInCache();
+    }
   }
 
   void _clear(){
-    LoadAndSaveSystem.instance.unregisterOnSaveCallback(_onSave);
+    CachingSystem.instance.unregisterOnSaveCallback(_onSave);
     _list.remove(this);
   }
 

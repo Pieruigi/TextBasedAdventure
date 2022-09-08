@@ -2,14 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
-import '/logic/game_manager.dart';
 
 
 /// This class takes care of saving and loading stored data.
 /// Singleton.
-class LoadAndSaveSystem extends ChangeNotifier{
+class CachingSystem extends ChangeNotifier{
 
-    static LoadAndSaveSystem? _instance;
+    static CachingSystem? _instance;
 
     final String _fileName = 'save.json';
 
@@ -21,16 +20,15 @@ class LoadAndSaveSystem extends ChangeNotifier{
 
     bool _initialized = false;
 
-    LoadAndSaveSystem._(){
+    CachingSystem._(){
       debugPrint('Creating loadAndSaveSystem');
       _instance ?? {
-        GameManager.instance.registerOnGameReleasedCallback(_clear),
         _instance = this,
       };
 
     }
 
-    static LoadAndSaveSystem get instance { _instance ?? LoadAndSaveSystem._(); return _instance!; }
+    static CachingSystem get instance { _instance ?? CachingSystem._(); return _instance!; }
 
     bool get isGameSaved {
       if(!_initialized){ throw Exception('LoadAndSaveSystem must be initialized first.'); }
@@ -62,9 +60,8 @@ class LoadAndSaveSystem extends ChangeNotifier{
     dynamic getFromCache(String key) => _cache[key];
 
     /// Clear everything
-    void _clear(){
+    void clear(){
       _cache.clear();
-      //_onSaveCallbacks.clear();
     }
 
     /// Returns true if a save game exists

@@ -1,12 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
-import 'package:textual_adventure/logic/action/impl/common_action.dart';
-import 'package:textual_adventure/logic/builder/json/json_prompt.dart';
-import 'package:textual_adventure/logic/builder/models/prompt_model.dart';
-import 'package:textual_adventure/logic/builder/models/prompt_model_collection.dart';
-import '../action/impl/pick_up_action.dart';
-import '../prompt/base_prompt.dart';
+import '/logic/builder/json/json_prompt.dart';
+import '/logic/builder/models/prompt/base_prompt_model.dart';
+import '/logic/builder/models/prompt/common_prompt_model.dart';
+import '/logic/builder/models/prompt/prompt_model_factory.dart';
 import '../prompt/impl/common_prompt.dart';
 
 
@@ -28,15 +25,25 @@ class GameMaker{
 
   }
 
+  void _logicCreatePrompt(BasePromptModel model){
+    if(model is CommonPromptModel){
+      CommonPrompt(speech: model.descriptionLocale);
+    }
+
+  }
+
+  ///
+  /// Build example
+  ///
   void buildExample(){
-    CommonPrompt toRemove = CommonPrompt(speech: 'no exception');
 
     ///
     /// Read all the prompts from the json file
     ///
-    PromptModelCollection promptModelCollection = PromptModelCollection.fromJson(jsonDecode(json_prompt));
-    debugPrint(promptModelCollection.toString());
-
+    List<BasePromptModel> promptModelList = PromptModelFactory.fromJson(jsonDecode(json_prompt));
+    for (var element in promptModelList) {debugPrint(element.toString());}
+    // Build logic prompts
+    for (var element in promptModelList) { _logicCreatePrompt(element); }
   }
 
 

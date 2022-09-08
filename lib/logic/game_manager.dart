@@ -5,6 +5,7 @@ import 'builder/game_maker.dart';
 class GameManager{
   static GameManager? _instance;
 
+
   /// Register objects to perform some action after the game has been initialized ( for example to load data from the cache )
   final List<Function> _onGameBuiltCallbacks = [];
   /// Register objects to perform action on game released ( for example to clear data )

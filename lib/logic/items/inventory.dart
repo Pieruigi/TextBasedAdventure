@@ -52,13 +52,20 @@ class Inventory with ICacheable{
 
   @override
   void fromCacheValue(String data) {
+    _clear();
     consumeCache(data.split(cacheSeparator).length, data);
+  }
+
+  @override
+  void notInCache() {
+    _clear();
   }
 
   @override
   String toCacheValue() {
     return appendCache(_itemIds, null);
   }
+
 
 
   //set capacity(int value) => _capacity = value;

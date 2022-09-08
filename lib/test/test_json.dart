@@ -1,8 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
-import '/logic/builder/models/action_model.dart';
-import '/logic/builder/models/action_model_collection.dart';
 
 class TestJson{
 
@@ -20,7 +15,7 @@ class TestJson{
       '{ "type" : "pickUp", "descriptionLocale" : "pickUp", "targets" : [ { "target" : "0x2001", "target" : "0x0501" } ] }'
       ']}';
 
-  static void load1(){
+/*  static void load1(){
     ActionModel actionModel = ActionModel.fromJson(jsonDecode(json1));
     debugPrint(actionModel.toString());
   }
@@ -37,5 +32,5 @@ class TestJson{
     debugPrint(collection.toString());
     String json = jsonEncode(collection.toJson());
     debugPrint(json.toString());
-  }
+  }*/
 }

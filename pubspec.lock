@@ -7,14 +7,14 @@ packages:
       name: _fe_analyzer_shared
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "47.0.0"
+    version: "38.0.0"
   analyzer:
     dependency: transitive
     description:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.7.0"
+    version: "3.4.1"
   args:
     dependency: transitive
     description:
@@ -134,6 +134,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.1.1"
+  built_mirrors:
+    dependency: "direct main"
+    description:
+      name: built_mirrors
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   built_value:
     dependency: transitive
     description:

@@ -1,9 +1,11 @@
+import 'package:built_mirrors/built_mirrors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:textual_adventure/logic/items/inventory.dart';
 import '/logic/prompt/base_prompt.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../logic/audio/audio_player_data.dart';
-import '../logic/caching/load_and_save_system.dart';
+import '../logic/caching/chaching_system.dart';
 import '../logic/game_manager.dart';
 import '../logic/prompt/prompt_notifier.dart';
 import '../main.dart';
@@ -98,7 +100,7 @@ void _quit(BuildContext context){
 }
 
 void _save() async{
-  await LoadAndSaveSystem.instance.save();
+  await CachingSystem.instance.save();
 }
 
 
@@ -120,7 +122,10 @@ class _PromptViewState extends State<PromptView> {
   Widget build(BuildContext context) {
 
     BasePrompt prompt = context.watch<PromptNotifier>().current;
+/*    debugPrint(AppLocalizations.of(context).toString());
+    debugPrint(reflectFunction(debugPrint).call(['pippo']));*/
 
+    //debugPrint(reflect(AppLocalizations.of(context)).methods.length.toString());
     return Container(
       padding: const EdgeInsets.all(10),
       child: Column(
@@ -129,6 +134,7 @@ class _PromptViewState extends State<PromptView> {
           SizedBox(
             width: 600,
             height: 250,
+            //child: Text((String) reflect(AppLocalizations.of(context)).getters.where((element) => element.toString() == prompt.speech), style: commonPromptTheme.textTheme.headline1,),
             child: Text(prompt.speech, style: commonPromptTheme.textTheme.headline1,),
           ),
           ListView.builder(

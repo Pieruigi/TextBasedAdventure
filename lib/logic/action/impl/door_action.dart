@@ -84,13 +84,15 @@ class DoorAction extends BaseAction with ICacheable
 
   @override
   void fromCacheValue(String data) {
-    if (kDebugMode) {
-      print(data);
-    }
 
-    CacheConsumingResult res = consumeCache(1, data);
-    _locked = int.parse(res.values[0]) > 0 ? true : false;
-    super.fromCacheValue(res.remainingData);
+      CacheConsumingResult res = consumeCache(1, data);
+      _locked = int.parse(res.values[0]) > 0 ? true : false;
+      super.fromCacheValue(res.remainingData);
+  }
+
+  @override
+  void notInCache(){
+    super.notInCache();
   }
 
   @override

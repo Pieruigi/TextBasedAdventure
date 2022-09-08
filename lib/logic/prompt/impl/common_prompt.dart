@@ -8,4 +8,6 @@ class CommonPrompt extends BasePrompt{
   //CommonPrompt(super.speech);
   CommonPrompt({required speech, List<BaseAction> actions = const []}) : super(speech: speech, actions: actions);
 
+
+
 }

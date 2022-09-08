@@ -88,10 +88,14 @@ abstract class BaseAction with ICacheable{
   ///
   @override
   void fromCacheValue(String data){
-    CacheConsumingResult ccr = consumeCache(1, data);
-    _hidden = int.parse(ccr.values[0]) > 0 ? true : false;
+      CacheConsumingResult ccr = consumeCache(1, data);
+      _hidden = int.parse(ccr.values[0]) > 0 ? true : false;
   }
 
+  @override
+  void notInCache(){
+
+  }
 
   @override
   String toString() {

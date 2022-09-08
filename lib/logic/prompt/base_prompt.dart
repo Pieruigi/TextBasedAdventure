@@ -1,4 +1,6 @@
-import '/logic/caching/load_and_save_system.dart';
+import 'package:textual_adventure/logic/interfaces/i_cacheable.dart';
+
+import '/logic/caching/chaching_system.dart';
 import '/logic/game_manager.dart';
 import '/logic/prompt/prompt_notifier.dart';
 import '/logic/action/base_action.dart';
@@ -76,7 +78,7 @@ abstract class BasePrompt
   }
 
   void _init(){
-    if(LoadAndSaveSystem.instance.isCacheEmpty){
+    if(CachingSystem.instance.isCacheEmpty){
       _list.indexOf(this) == 0 ? setCurrent(this) : (){};
     }
     else{
