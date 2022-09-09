@@ -1,6 +1,6 @@
 import 'package:textual_adventure/logic/builder/models/action/common_action_model.dart';
 
-import 'base_action_model.dart';
+import 'game_action_model.dart';
 import 'door_action_model.dart';
 
 
@@ -11,15 +11,15 @@ class ActionModelFactory{
   static const String doorActionType = "door";
 
 
-  static List<BaseActionModel> fromJson(Map<String, dynamic> json) {
-    List<BaseActionModel> ret = [];
+  static List<GameActionModel> fromJson(Map<String, dynamic> json) {
+    List<GameActionModel> ret = [];
     // Get the action list from the json file
     List actions = (json['actions'] as List<dynamic>);
 
     // Loop through each action
     for (var e in actions) {
       var type = (e as Map<String, dynamic>)['type'];
-      BaseActionModel model;
+      GameActionModel model;
       switch (type) {
         case commonActionType:
           ret.add(CommonActionModel(code: e['code'], textCode: e['textCode'], targetCode: e['target'], hidden: e['hidden']?.toString().toLowerCase() == 'true'   ));

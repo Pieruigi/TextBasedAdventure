@@ -1,7 +1,7 @@
-import '/logic/builder/models/prompt/base_prompt_model.dart';
+import '/logic/builder/models/prompt/game_prompt_model.dart';
 
-class CommonPromptModel extends BasePromptModel{
-  CommonPromptModel({required super.code});
+class CommonPromptModel extends GamePromptModel{
+  CommonPromptModel({required super.code, required super.textCode});
 
   @override
   String toString() {

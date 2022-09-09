@@ -1,6 +1,6 @@
-import 'package:textual_adventure/logic/builder/models/action/base_action_model.dart';
+import 'package:textual_adventure/logic/builder/models/action/game_action_model.dart';
 
-class CommonActionModel extends BaseActionModel{
+class CommonActionModel extends GameActionModel{
 
   CommonActionModel({required super.code, required super.textCode, required super.targetCode, super.hidden = false});
 

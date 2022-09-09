@@ -141,7 +141,7 @@ class _PromptViewState extends State<PromptView> {
               itemBuilder: (context, index) {
                 return TextButton(
                     onPressed: () => prompt.getActionByIndex(index).doAction(),
-                    child: Text(prompt.getActionByIndex(index).textId.toString()), // Get from localization file instead
+                    child: Text(prompt.getActionByIndex(index).textCode), // Get from localization file instead
                 );
               },
           )

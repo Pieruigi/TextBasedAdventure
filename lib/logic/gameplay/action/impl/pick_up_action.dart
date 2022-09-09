@@ -15,7 +15,7 @@ class PickUpAction extends GameAction{
   final int itemId;
 
   //PickUpAction(description, this.itemId, this.pickedUpTarget, this.failedTarget) : super(description: description);
-  PickUpAction({required super.textId, required super.hidden, required this.itemId, required this.pickedUpTarget,  this.failedTarget});
+  PickUpAction({required super.code, required super.textCode, required super.hidden, required this.itemId, required this.pickedUpTarget,  this.failedTarget});
 
   @override
   @protected

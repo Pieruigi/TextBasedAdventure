@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '../../caching/caching_system.dart';
 import '../../game_manager.dart';
 import '../action/game_action.dart';
@@ -8,7 +10,8 @@ import 'prompt_notifier.dart';
 /// A prompt has a text to describe the actual situation and a list of actions.
 abstract class GamePrompt
 {
-  static final List<GamePrompt> _list = [];
+  //static final List<GamePrompt> _list = [];
+  static final Map<String, GamePrompt> _map = {};
 
   // The prompt currently active
   static GamePrompt? _current;
@@ -18,6 +21,8 @@ abstract class GamePrompt
   // Called exiting this prompt
   final List<Function(GamePrompt)> _onPromptExitCallbacks = [];
 
+  //final String code;
+
   /// A voice-over describing the current scene.
   final String textCode;
 
@@ -25,19 +30,21 @@ abstract class GamePrompt
   final List<GameAction> _actions = [];
 
   /// Constructor
-  GamePrompt({required this.textCode }) {
+  GamePrompt({required code, required this.textCode }) {
     // Register callbacks
     GameManager.instance.registerOnGameBuiltCallback(_init);
     GameManager.instance.registerOnGameReleasedCallback(_clear);
     // Add to the list
-    _list.add(this);
+    //_list.add(this);
+    _map[code] = this;
 
   }
 
   ///
   /// Static getters and setters
   ///
-  static int get promptCount =>  _list.length;
+  //static int get promptCount =>  _list.length;
+  static int get promptCount =>  _map.length;
 
   ///
   /// Getters and setters
@@ -61,16 +68,20 @@ abstract class GamePrompt
     _current!.enter();
 
     PromptNotifier.instance.notify(_current!);
-
   }
 
-  static int getPromptIndex(GamePrompt prompt){
+  static GamePrompt getPromptByCode(String code){
+    debugPrint("getPromptByCode('$code')");
+    return _map[code]!;
+  }
+
+/*  static int getPromptIndex(GamePrompt prompt){
     return _list.indexOf(prompt);
-  }
+  }*/
 
-  static GamePrompt getPromptAtIndex(int index){
+/*  static GamePrompt getPromptAtIndex(int index){
     return _list.elementAt(index);
-  }
+  }*/
 
 
 
@@ -90,7 +101,8 @@ abstract class GamePrompt
 
   void _init(){
     if(CachingSystem.instance.isCacheEmpty){
-      _list.indexOf(this) == 0 ? setCurrent(this) : (){};
+      _map.values.first == this ? setCurrent(this) : null;
+      //_list.indexOf(this) == 0 ? setCurrent(this) : (){};
     }
     else{
       // InitByCache()
@@ -124,14 +136,21 @@ abstract class GamePrompt
   }
 
   void _clear(){
-    _list.remove(this);
+    //_list.remove(this);
+    _map.removeWhere((key, value) => value == this);
   }
 
   @override
   String toString() {
     // TODO: implement toString
-    String ret = '[Prompt actionCount:${_actions.length}, textCode:$textCode]';
+    String ret = 'actionCount:${_actions.length}, textCode:$textCode';
 
     return ret;
+  }
+
+  static void debug(){
+    String s = '[GamePrompt elements.Count:${_map.length}]';
+    _map.forEach((key, value) { s = '$s\n[GamePrompt code:$key, $value]'; });
+    debugPrint(s);
   }
 }

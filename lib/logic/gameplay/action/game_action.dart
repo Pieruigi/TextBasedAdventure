@@ -10,10 +10,12 @@ import '/logic/gameplay/prompt/game_prompt.dart';
 abstract class GameAction with ICacheable{
 
   /// A list with all the actions
-  static final List<GameAction> _list = [];
+  //static final List<GameAction> _list = [];
+  static final Map<String, GameAction> _map = {};
+
 
   /// A short description telling the player what is going to do.
-  final int _textId;
+  final String textCode;
 
   /// Is this action hidden?
   /// For example if you unlock a door this action may become hidden replaced by another than
@@ -24,24 +26,23 @@ abstract class GameAction with ICacheable{
   late GamePrompt _targetPrompt;
 
   /// Constructor
-  GameAction({required textId, required hidden}) : _textId = textId, _hidden = hidden {
+  GameAction({required String code, required this.textCode, required hidden}) : _hidden = hidden {
 
     GameManager.instance.registerOnGameBuiltCallback(_init);
     GameManager.instance.registerOnGameReleasedCallback(_clear);
 
-    _list.add(this);
+    //_list.add(this);
+    _map[code] = this;
   }
-
-  int get textId => _textId;
 
   set hidden(bool value) => _hidden = value;
 
   ///
   /// Static methods
   ///
-  static int getActionIndex(GameAction action){
+ /* static int getActionIndex(GameAction action){
     return _list.indexOf(action);
-  }
+  }*/
 
   /// Implement this method in the child class.
   /// Returns the target prompt
@@ -72,7 +73,8 @@ abstract class GameAction with ICacheable{
   }
 
   void _clear(){
-    _list.remove(this);
+    //_list.remove(this);
+    _map.removeWhere((key, value) => value == this);
   }
 
   ///
@@ -102,7 +104,7 @@ abstract class GameAction with ICacheable{
 
     String ret = '';
 
-    ret += 'textId:$_textId, Hidden:$_hidden\n';
+    ret += 'textId:$textCode, Hidden:$_hidden\n';
 
     return ret;
   }

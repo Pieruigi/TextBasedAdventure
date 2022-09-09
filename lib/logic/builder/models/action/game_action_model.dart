@@ -1,6 +1,6 @@
-import '../prompt/base_prompt_model.dart';
+import '../prompt/game_prompt_model.dart';
 
-abstract class BaseActionModel {
+abstract class GameActionModel {
 
   /// The code has the following format: promptCode_actionIndex
   final String code;
@@ -14,7 +14,7 @@ abstract class BaseActionModel {
 
   final bool hidden;
 
-  BaseActionModel({required this.code, required this.textCode, required this.targetCode, this.hidden = false});
+  GameActionModel({required this.code, required this.textCode, required this.targetCode, this.hidden = false});
 
 
 }

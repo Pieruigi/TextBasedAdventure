@@ -6,7 +6,7 @@ import '../game_prompt.dart';
 class CommonPrompt extends GamePrompt{
 
   //CommonPrompt(super.speech);
-  CommonPrompt({required super.textCode});
+  CommonPrompt({required super.code, required super.textCode});
 
 
 

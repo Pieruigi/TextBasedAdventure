@@ -4,7 +4,7 @@
 
 class Item{
 
-  static final List<Item> _list = [];
+  static final Map<String, Item> _map = {};
 
   /// The name of the item
   final String name;
@@ -15,9 +15,9 @@ class Item{
   /// The weight
   final double weight;
 
-  Item({required this.name, this.description = '', this.weight = 0}) {
+  Item({required String code, required this.name, this.description = '', this.weight = 0}) {
    GameManager.instance.registerOnGameReleasedCallback(_clear);
-   _list.add(this);
+   _map[code] = this;
   }
 
 
@@ -25,7 +25,7 @@ class Item{
   /// Static methods
   ///
   /// Add a new item in the list
-  static void addItem(Item item){
+/*  static void addItem(Item item){
    _list.add(item);
   }
 
@@ -35,14 +35,14 @@ class Item{
 
   static int getLastItemIndex(){
    return _list.indexOf(_list.last);
-  }
+  }*/
 
   ///
   /// Non static methods
   ///
 
   void _clear(){
-   _list.remove(this);
+   _map.removeWhere((key, value) => value == this);
   }
 
 

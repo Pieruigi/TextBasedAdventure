@@ -12,7 +12,7 @@ class CommonAction extends GameAction{
   final GamePrompt _target;
 
   //CommonAction(description, this._target) : super(description: description);
-  CommonAction({required super.textId, required super.hidden, required target}) : _target = target;
+  CommonAction({required super.code, required super.textCode, required super.hidden, required target}) : _target = target;
 
   @override
   @protected

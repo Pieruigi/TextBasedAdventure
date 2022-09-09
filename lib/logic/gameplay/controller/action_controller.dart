@@ -7,7 +7,7 @@ import '/logic/game_manager.dart';
 /// prompt ( for example when you enter the prompt after you picked a key you can enable the action "use the key" to open a door.
 class ActionController{
 
-  static final List<ActionController> _list = [];
+  static final Map<String, ActionController> _map = {};
 
   /// The list of actions you want to activate when you enter or exit the prompt
   final List<GameAction>? activatingList;
@@ -26,7 +26,7 @@ class ActionController{
   /// are activated again )
   final bool triggerOnExit;
 
-  ActionController({required this.prompt, this.activatingList, this.deactivatingList, this.triggerOnEnter = true, this.triggerOnExit = false}){
+  ActionController({required String code, required this.prompt, this.activatingList, this.deactivatingList, this.triggerOnEnter = true, this.triggerOnExit = false}){
     // Check params
     if(activatingList == null && deactivatingList == null){ throw Exception('Both the activating and the deactivating lists are null in the action controller.'); }
     if(!triggerOnEnter && !triggerOnExit){ throw Exception('Both on enter and on exit triggers are null in the action controller'); }
@@ -34,7 +34,7 @@ class ActionController{
     GameManager.instance.registerOnGameReleasedCallback(_clear);
 
     // Add to the controller manager
-    _list.add(this);
+    _map[code] = this;
 
     // Register callbacks
     if(triggerOnEnter){
@@ -75,6 +75,6 @@ class ActionController{
   void _clear(){
     if(triggerOnEnter) {prompt.unregisterOnPromptEnterCallback((p0) => _onEnter);}
     if(triggerOnExit) { prompt.unregisterOnPromptExitCallback((p0) => _onExit);}
-    _list.remove(this);
+    _map.removeWhere((key, value) => value == this);
   }
 }

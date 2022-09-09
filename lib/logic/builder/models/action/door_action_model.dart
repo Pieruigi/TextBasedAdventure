@@ -1,8 +1,8 @@
-import 'package:textual_adventure/logic/builder/models/action/base_action_model.dart';
+import 'package:textual_adventure/logic/builder/models/action/game_action_model.dart';
 
-import '../prompt/base_prompt_model.dart';
+import '../prompt/game_prompt_model.dart';
 
-class DoorActionModel extends BaseActionModel{
+class DoorActionModel extends GameActionModel{
 
   String? isUnlockedTargetCode; // key=uTarget
   String? failedTargetCode; // key=fTarget

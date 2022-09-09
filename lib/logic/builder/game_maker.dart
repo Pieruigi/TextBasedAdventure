@@ -11,10 +11,10 @@ import 'json/json_prompt.dart';
 import 'json/locales/json_action_text_it.dart';
 import 'json/locales/json_prompt_text_it.dart';
 import 'models/action/action_model_factory.dart';
-import 'models/action/base_action_model.dart';
+import 'models/action/game_action_model.dart';
 import 'models/action/common_action_model.dart';
 import 'models/action/door_action_model.dart';
-import 'models/prompt/base_prompt_model.dart';
+import 'models/prompt/game_prompt_model.dart';
 import 'models/prompt/common_prompt_model.dart';
 import 'models/prompt/prompt_model_factory.dart';
 import 'models/text_model.dart';
@@ -37,19 +37,61 @@ class GameMaker{
   void create(){
     _build();
 
-    for(int i=0; i<GamePrompt.promptCount; i++){
-      debugPrint(GamePrompt.getPromptAtIndex(i).toString());
-    }
+
   }
 
   void _build(){
     debugPrint('Locale:$Locale');
 
-    /// Logic maps
-    Map<String, GameText> textMap = {};
-    Map<String, GamePrompt> promptMap = {};
-    Map<String, GameAction> actionMap = {};
+    ///
+    /// Load from json
+    ///
+    /// Texts
+    List<Object> tmp = TextModel.fromJson(jsonDecode(jsonPromptText_it));
+    tmp.addAll(TextModel.fromJson(jsonDecode(jsonActionText_it)));
+    for (TextModel text in tmp.cast<TextModel>()) { GameText(code: text.code, content: text.content); }
 
+    GameText.debug();
+
+    /// Prompts
+    tmp = PromptModelFactory.fromJson(jsonDecode(jsonPrompt));
+    for (GamePromptModel model in tmp.cast<GamePromptModel>()) {
+      if(model is CommonPromptModel){
+        CommonPrompt(code: model.code, textCode: model.textCode);
+      }
+    }
+
+    GamePrompt.debug();
+
+    /// Actions
+    tmp = ActionModelFactory.fromJson(jsonDecode(jsonAction));
+    for (GameActionModel model in tmp.cast<GameActionModel>()) {
+      if(model is CommonActionModel){
+        CommonAction(
+            code: model.code,
+          //textCode: actionTextModelList.firstWhere((element) => model.textCode == element.code).content,
+            textCode:  model.textCode,
+            target: GamePrompt.getPromptByCode(model.targetCode),
+            hidden: model.hidden.toString().toLowerCase() == 'true'
+        );
+
+      }
+      if(model is DoorActionModel){
+        DoorAction(
+          code: model.code,
+          textCode:  model.textCode,
+          walkThroughTarget: GamePrompt.getPromptByCode(model.targetCode),
+          isLockedTarget: model.isLockedTargetCode != null ? GamePrompt.getPromptByCode(model.isLockedTargetCode!) : null,
+          hasBeenUnlockedTarget: model.isUnlockedTargetCode != null ? GamePrompt.getPromptByCode(model.isUnlockedTargetCode!) : null,
+          key: (model).keyCode,
+          hidden: model.hidden.toString().toLowerCase() == 'true',
+          failedToUnlockTarget: model.failedTargetCode != null ? GamePrompt.getPromptByCode(model.failedTargetCode!) : null,
+          locked: (model).locked.toString().toLowerCase() == 'true',
+        );
+
+      }
+    }
+/*
     ///
     /// Load models into corresponding lists from json files
     ///
@@ -93,7 +135,7 @@ class GameMaker{
       if(model is CommonActionModel){
         actionMap[model.code] = CommonAction(
             //textCode: actionTextModelList.firstWhere((element) => model.textCode == element.code).content,
-            textId:  model.textCode,
+            textCode:  model.textCode,
             target: promptMap[model.targetCode],
             hidden: model.hidden.toString().toLowerCase() == 'true'
         );
@@ -102,7 +144,7 @@ class GameMaker{
       if(model is DoorActionModel){
 
           actionMap[model.code] = DoorAction(
-            textId:  model.textCode,
+            textCode:  model.textCode,
             walkThroughTarget: promptMap[model.targetCode],
             isLockedTarget: promptMap[(model).isLockedTargetCode],
             hasBeenUnlockedTarget: promptMap[(model).isUnlockedTargetCode],
@@ -130,8 +172,9 @@ class GameMaker{
       }
 
     });
-
+*/
   }
+
 
 
 
