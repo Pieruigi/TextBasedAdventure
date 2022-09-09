@@ -1,0 +1,10 @@
+String jsonPromptText_it = '{"texts" : [ '
+    '{ "code" : "#00001", "content" : "Ti trovi in una stanza, davanti hai una porta e a destra una scrivania." },'
+    '{ "code" : "#00002", "content" : "Una massiccia porta in legno." },'
+    '{ "code" : "#00003", "content" : "La porta è chiusa a chiave." },'
+    '{ "code" : "#00004", "content" : "La scrivania è piena di documenti e scartoffie." },'
+    '{ "code" : "#00005", "content" : "Ci sono fatture e alcuni libri contabili. Sotto uno di questi trovi una chiave." },'
+    '{ "code" : "#00006", "content" : "E'' una piccola chiave di metallo." },'
+    '{ "code" : "#00007", "content" : "Leggi alcuni interessanti documenti." },'
+    '{ "code" : "#00008", "content" : "Nei cassetti non trovi nulla di utile." }'
+    ']}';

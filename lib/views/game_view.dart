@@ -1,11 +1,10 @@
-import 'package:built_mirrors/built_mirrors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:textual_adventure/logic/items/inventory.dart';
+
 import '/logic/prompt/base_prompt.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../logic/audio/audio_player_data.dart';
-import '../logic/caching/chaching_system.dart';
+import '../logic/caching/caching_system.dart';
 import '../logic/game_manager.dart';
 import '../logic/prompt/prompt_notifier.dart';
 import '../main.dart';
@@ -135,7 +134,7 @@ class _PromptViewState extends State<PromptView> {
             width: 600,
             height: 250,
             //child: Text((String) reflect(AppLocalizations.of(context)).getters.where((element) => element.toString() == prompt.speech), style: commonPromptTheme.textTheme.headline1,),
-            child: Text(prompt.speech, style: commonPromptTheme.textTheme.headline1,),
+            child: Text(prompt.textCode, style: commonPromptTheme.textTheme.headline1,),
           ),
           ListView.builder(
             itemCount: prompt.actionCount,

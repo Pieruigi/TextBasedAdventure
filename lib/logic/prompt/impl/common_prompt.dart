@@ -6,7 +6,7 @@ import '/logic/prompt/base_prompt.dart';
 class CommonPrompt extends BasePrompt{
 
   //CommonPrompt(super.speech);
-  CommonPrompt({required speech, List<BaseAction> actions = const []}) : super(speech: speech, actions: actions);
+  CommonPrompt({required super.textCode});
 
 
 

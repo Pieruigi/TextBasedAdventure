@@ -12,7 +12,7 @@ class CommonAction extends BaseAction{
   final BasePrompt _target;
 
   //CommonAction(description, this._target) : super(description: description);
-  CommonAction({required description, required target}) : _target = target, super(description: description);
+  CommonAction({required super.textCode, required super.hidden, required target}) : _target = target;
 
   @override
   @protected

@@ -1,11 +1,11 @@
 import '/logic/builder/models/prompt/base_prompt_model.dart';
 
 class CommonPromptModel extends BasePromptModel{
-  CommonPromptModel({required super.descriptionLocale});
+  CommonPromptModel({required super.code});
 
   @override
   String toString() {
-    return '[CommonPromptModel descriptionLocale:$descriptionLocale]';
+    return '[CommonPromptModel code:$code]';
   }
 
 }

@@ -1,7 +1,7 @@
 abstract class BasePromptModel{
 
-  final String descriptionLocale;
+  final String code;
 
-  BasePromptModel({required this.descriptionLocale});
+  BasePromptModel({required this.code});
 
 }

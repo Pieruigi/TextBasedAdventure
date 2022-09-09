@@ -13,7 +13,7 @@ abstract class BaseAction with ICacheable{
   static final List<BaseAction> _list = [];
 
   /// A short description telling the player what is going to do.
-  final String _description;
+  final String _textCode;
 
   /// Is this action hidden?
   /// For example if you unlock a door this action may become hidden replaced by another than
@@ -24,7 +24,7 @@ abstract class BaseAction with ICacheable{
   late BasePrompt _targetPrompt;
 
   /// Constructor
-  BaseAction({required description}) : _description = description{
+  BaseAction({required textCode, required hidden}) : _textCode = textCode, _hidden = hidden {
 
     GameManager.instance.registerOnGameBuiltCallback(_init);
     GameManager.instance.registerOnGameReleasedCallback(_clear);
@@ -32,7 +32,7 @@ abstract class BaseAction with ICacheable{
     _list.add(this);
   }
 
-  String get description => _description;
+  String get description => _textCode;
 
   set hidden(bool value) => _hidden = value;
 
@@ -102,7 +102,7 @@ abstract class BaseAction with ICacheable{
 
     String ret = '';
 
-    ret += 'Description:$_description, Hidden:$_hidden\n';
+    ret += 'Description:$_textCode, Hidden:$_hidden\n';
 
     return ret;
   }

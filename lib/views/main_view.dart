@@ -4,7 +4,7 @@ import '/logic/audio/audio_mixer.dart';
 import '/logic/audio/audio_player_data.dart';
 import '/logic/audio/audioclip.dart';
 import '../main.dart';
-import '/logic/caching/chaching_system.dart';
+import '/logic/caching/caching_system.dart';
 import 'misc/themes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'commons.dart';

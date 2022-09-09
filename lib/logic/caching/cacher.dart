@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import '/logic/interfaces/i_cacheable.dart';
 import '/logic/game_manager.dart';
-import '/logic/caching/chaching_system.dart';
+import '/logic/caching/caching_system.dart';
 
 class Cacher{
 

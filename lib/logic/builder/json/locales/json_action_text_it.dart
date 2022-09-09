@@ -1,0 +1,10 @@
+String jsonActionText_it = '{"texts" : [ '
+    '{ "code" : "reach_door", "content" : "Raggiungi la porta." },'
+    '{ "code" : "reach_desk", "content" : "Vai alla scrivania." },'
+    '{ "code" : "reach_room", "content" : "Entra nella seconda stanza." },'
+    '{ "code" : "first_room", "content" : "La scrivania è piena di documenti e scartoffie." },'
+    '{ "code" : "#00005", "content" : "Ci sono fatture e alcuni libri contabili. Sotto uno di questi trovi una chiave." },'
+    '{ "code" : "#00006", "content" : "E'' una piccola chiave di metallo." },'
+    '{ "code" : "#00007", "content" : "Leggi alcuni interessanti documenti." },'
+    '{ "code" : "#00008", "content" : "Nei cassetti non trovi nulla di utile." }'
+    ']}';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/logic/caching/chaching_system.dart';
+import '/logic/caching/caching_system.dart';
 import 'logic/prompt/prompt_notifier.dart';
 import 'views/initialization_view.dart';
 import 'views/options_view.dart';

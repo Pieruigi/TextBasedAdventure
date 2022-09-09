@@ -1,6 +1,6 @@
 import 'package:textual_adventure/logic/interfaces/i_cacheable.dart';
 
-import '/logic/caching/chaching_system.dart';
+import '/logic/caching/caching_system.dart';
 import '/logic/game_manager.dart';
 import '/logic/prompt/prompt_notifier.dart';
 import '/logic/action/base_action.dart';
@@ -22,13 +22,13 @@ abstract class BasePrompt
   final List<Function(BasePrompt)> _onPromptExitCallbacks = [];
 
   /// A voice-over describing the current scene.
-  final String speech;
+  final String textCode;
 
   /// All the actions the player can take in this particular prompt; every action always will lead the player to another prompt.
-  final List<BaseAction> _actions;
+  final List<BaseAction> _actions = [];
 
   /// Constructor
-  BasePrompt({required this.speech, List<BaseAction> actions = const [] }) : _actions = actions {
+  BasePrompt({required this.textCode }) {
     // Register callbacks
     GameManager.instance.registerOnGameBuiltCallback(_init);
     GameManager.instance.registerOnGameReleasedCallback(_clear);
@@ -37,6 +37,16 @@ abstract class BasePrompt
 
   }
 
+
+
+  ///
+  /// Static getters and setters
+  ///
+  static int get promptCount =>  _list.length;
+
+  ///
+  /// Getters and setters
+  ///
   BasePrompt get current => _current!;
 
   int get actionCount => _actions.length;
@@ -62,6 +72,12 @@ abstract class BasePrompt
   static int getPromptIndex(BasePrompt prompt){
     return _list.indexOf(prompt);
   }
+
+  static BasePrompt getPromptAtIndex(int index){
+    return _list.elementAt(index);
+  }
+
+
 
   ///
   /// Non static methods
@@ -119,13 +135,7 @@ abstract class BasePrompt
   @override
   String toString() {
     // TODO: implement toString
-    String ret = '[PromptList Length:${_list.length}]';
-
-    ret += 'Speech:$speech\n';
-
-    for(BaseAction action in _actions){
-      ret += '$action';
-    }
+    String ret = '[Prompt actionCount:${_actions.length}, speech:$textCode]';
 
     return ret;
   }

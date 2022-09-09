@@ -16,7 +16,7 @@ class PromptModelFactory{
       BasePromptModel model;
       switch (type) {
         case commonPromptType:
-          ret.add(CommonPromptModel(descriptionLocale: e['descriptionLocale']));
+          ret.add(CommonPromptModel(code: e['code']));
           break;
         default:
           throw Exception('No action model found to decode json');

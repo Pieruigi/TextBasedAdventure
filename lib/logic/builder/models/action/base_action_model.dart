@@ -2,15 +2,19 @@ import '../prompt/base_prompt_model.dart';
 
 abstract class BaseActionModel {
 
-  /// The description key for the localization system
-  final String descriptionLocale;
+  /// The code has the following format: promptCode_actionIndex
+  final String code;
+
+  /// The text code
+  final String textCode;
 
   /// Every action has at least one target to reach, so the default target is always 'target' on the json string;
   /// for example for doors the walkThroughTarget is the 'target' in the json
-  final BasePromptModel target;
+  final String targetCode; // key=target
 
+  final bool hidden;
 
-  BaseActionModel({required this.descriptionLocale, required this.target});
+  BaseActionModel({required this.code, required this.textCode, required this.targetCode, this.hidden = false});
 
 
 }

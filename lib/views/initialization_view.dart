@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../logic/audio/audio_mixer.dart';
 import '../logic/audio/mixer_output.dart';
-import '../logic/caching/chaching_system.dart';
+import '../logic/caching/caching_system.dart';
 import '../logic/prefs.dart';
 import '../main.dart';
 

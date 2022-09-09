@@ -1,12 +1,14 @@
 import 'package:textual_adventure/logic/builder/models/action/common_action_model.dart';
 
 import 'base_action_model.dart';
+import 'door_action_model.dart';
 
 
 class ActionModelFactory{
 
   static const String commonActionType = "common";
   static const String pickUpActionType = "pickUp";
+  static const String doorActionType = "door";
 
 
   static List<BaseActionModel> fromJson(Map<String, dynamic> json) {
@@ -20,7 +22,20 @@ class ActionModelFactory{
       BaseActionModel model;
       switch (type) {
         case commonActionType:
-          ret.add(CommonActionModel(descriptionLocale: e['descriptionLocale'], target: e['target']));
+          ret.add(CommonActionModel(code: e['code'], textCode: e['textCode'], targetCode: e['target'], hidden: e['hidden']?.toString().toLowerCase() == 'true'   ));
+          break;
+        case doorActionType:
+          ret.add(DoorActionModel(
+              code: e['code'],
+              textCode: e['textCode'],
+              hidden: e['hidden']?.toString().toLowerCase() == 'true',
+              targetCode: e['target'],
+              isUnlockedTargetCode: e['uTarget'],
+              failedTargetCode: e['fTarget'],
+              isLockedTargetCode: e['lTarget'],
+              keyCode: e['keyCode'],
+              locked: e['locked']
+          ));
           break;
         default:
           throw Exception('No action model found to decode json');

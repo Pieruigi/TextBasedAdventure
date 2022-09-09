@@ -30,13 +30,15 @@ class DoorAction extends BaseAction with ICacheable
   /// This should be loaded from the inventory
   String? _equippedKey;
 
+  DoorAction({required super.textCode, required super.hidden, required locked, this.walkThroughTarget, this.isLockedTarget, this.key, this.hasBeenUnlockedTarget, this.failedToUnlockTarget}) : _locked = locked;
+
   /// Constructors
   /// The unlocked constructor needs only the walkThroughTarget prompt
   //DoorAction.unlocked(description, this.walkThroughTarget, {this.key, this.hasBeenUnlockedTarget, this.failedToUnlockTarget, this.isLockedTarget}) : _locked = false, super(description: description);
-  DoorAction.unlocked({required description, required this.walkThroughTarget, this.key, this.hasBeenUnlockedTarget, this.failedToUnlockTarget, this.isLockedTarget}) : _locked = false, super(description: description);
+  DoorAction.unlocked({required super.textCode, required this.walkThroughTarget, required super.hidden, this.key, this.hasBeenUnlockedTarget, this.failedToUnlockTarget, this.isLockedTarget}) : _locked = false;
   /// The locked constructor needs at least the isLockedTarget prompt
   //DoorAction.locked(description, this.isLockedTarget, {this.key, this.walkThroughTarget, this.hasBeenUnlockedTarget, this.failedToUnlockTarget }) : _locked = true, super(description: description);
-  DoorAction.locked({required description, required this.isLockedTarget, this.key, this.walkThroughTarget, this.hasBeenUnlockedTarget, this.failedToUnlockTarget }) : _locked = true, super(description: description);
+  DoorAction.locked({required super.textCode, required this.isLockedTarget, required super.hidden, this.key, this.walkThroughTarget, this.hasBeenUnlockedTarget, this.failedToUnlockTarget}) : _locked = true;
 
   /// Action implementation.
   /// We try to unlock the door if it is locked, otherwise we walk through.

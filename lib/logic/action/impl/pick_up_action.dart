@@ -15,7 +15,7 @@ class PickUpAction extends BaseAction{
   final int itemId;
 
   //PickUpAction(description, this.itemId, this.pickedUpTarget, this.failedTarget) : super(description: description);
-  PickUpAction({required description, required this.itemId, required this.pickedUpTarget, this.failedTarget}) : super(description: description);
+  PickUpAction({required super.textCode, required super.hidden, required this.itemId, required this.pickedUpTarget,  this.failedTarget});
 
   @override
   @protected
