@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
-import '/logic/action/base_action.dart';
-import '/logic/prompt/base_prompt.dart';
+import '../../action/game_action.dart';
+import '../../prompt/game_prompt.dart';
 
 /// Use this class if you simply want to move in a specific direction and nothing is in your
 /// path.
 /// NB: to walk through a door you might want to use the DoorAction class instead.
 /// NB: you can also use move action in dialogs or descriptions.
-class CommonAction extends BaseAction{
+class CommonAction extends GameAction{
 
-  final BasePrompt _target;
+  final GamePrompt _target;
 
   //CommonAction(description, this._target) : super(description: description);
-  CommonAction({required super.textCode, required super.hidden, required target}) : _target = target;
+  CommonAction({required super.textId, required super.hidden, required target}) : _target = target;
 
   @override
   @protected
-  BasePrompt doActionImpl() {
+  GamePrompt doActionImpl() {
     return _target;
   }
 

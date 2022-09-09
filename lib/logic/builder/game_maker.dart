@@ -1,21 +1,22 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:textual_adventure/logic/action/base_action.dart';
-import 'package:textual_adventure/logic/action/impl/common_action.dart';
-import 'package:textual_adventure/logic/action/impl/door_action.dart';
-import '../prompt/base_prompt.dart';
-import '/logic/builder/json/json_action.dart';
-import '/logic/builder/json/json_prompt.dart';
-import '/logic/builder/models/prompt/base_prompt_model.dart';
-import '/logic/builder/models/prompt/common_prompt_model.dart';
-import '/logic/builder/models/prompt/prompt_model_factory.dart';
-import '../prompt/impl/common_prompt.dart';
+import '../gameplay/action/game_action.dart';
+import '../gameplay/action/impl/common_action.dart';
+import '../gameplay/action/impl/door_action.dart';
+import '../gameplay/game_text.dart';
+import '../gameplay/prompt/game_prompt.dart';
+import '../gameplay/prompt/impl/common_prompt.dart';
+import 'json/json_action.dart';
+import 'json/json_prompt.dart';
 import 'json/locales/json_action_text_it.dart';
 import 'json/locales/json_prompt_text_it.dart';
 import 'models/action/action_model_factory.dart';
 import 'models/action/base_action_model.dart';
 import 'models/action/common_action_model.dart';
 import 'models/action/door_action_model.dart';
+import 'models/prompt/base_prompt_model.dart';
+import 'models/prompt/common_prompt_model.dart';
+import 'models/prompt/prompt_model_factory.dart';
 import 'models/text_model.dart';
 
 
@@ -36,8 +37,8 @@ class GameMaker{
   void create(){
     _build();
 
-    for(int i=0; i<BasePrompt.promptCount; i++){
-      debugPrint(BasePrompt.getPromptAtIndex(i).toString());
+    for(int i=0; i<GamePrompt.promptCount; i++){
+      debugPrint(GamePrompt.getPromptAtIndex(i).toString());
     }
   }
 
@@ -45,27 +46,37 @@ class GameMaker{
     debugPrint('Locale:$Locale');
 
     /// Logic maps
-    /*Map<String, String> promptTextMap = {};
-    Map<String, String> actionTextMap = {};*/
-    Map<String, BasePrompt> promptMap = {};
-    Map<String, BaseAction> actionMap = {};
+    Map<String, GameText> textMap = {};
+    Map<String, GamePrompt> promptMap = {};
+    Map<String, GameAction> actionMap = {};
 
     ///
-    /// Load all into list from jsons
+    /// Load models into corresponding lists from json files
     ///
-    List<TextModel> promptTextModelList = TextModel.fromJson(jsonDecode(jsonPromptText_it));
-    List<TextModel>actionTextModelList = TextModel.fromJson(jsonDecode(jsonActionText_it));
+    List<TextModel> textModelList = [];
+    textModelList.addAll(TextModel.fromJson(jsonDecode(jsonPromptText_it)));
+    textModelList.addAll(TextModel.fromJson(jsonDecode(jsonActionText_it)));
     List<BasePromptModel> promptModelList = PromptModelFactory.fromJson(jsonDecode(jsonPrompt));
     List<BaseActionModel> actionModelList = ActionModelFactory.fromJson(jsonDecode(jsonAction));
 
     debugPrint("actionModelList.Count:${actionModelList.length}");
 
     ///
+    /// Create logic texts
+    ///
+    for (var value in textModelList) {
+      textMap[value.code] =  GameText(content: value.content);
+    }
+
+
+    ///
     /// Create logic prompts
     ///
     for (var model in promptModelList) {
       if(model is CommonPromptModel){
-        promptMap[model.code] = CommonPrompt(textCode: model.code ); // Prompt and the corresponding text have the same code
+        // Get the text id
+
+        //promptMap[model.code] = CommonPrompt(textId: model.code ); // Prompt and the corresponding text have the same code
       }
     }
 
@@ -82,7 +93,7 @@ class GameMaker{
       if(model is CommonActionModel){
         actionMap[model.code] = CommonAction(
             //textCode: actionTextModelList.firstWhere((element) => model.textCode == element.code).content,
-            textCode: model.textCode,
+            textId:  model.textCode,
             target: promptMap[model.targetCode],
             hidden: model.hidden.toString().toLowerCase() == 'true'
         );
@@ -91,7 +102,7 @@ class GameMaker{
       if(model is DoorActionModel){
 
           actionMap[model.code] = DoorAction(
-            textCode: model.textCode,
+            textId:  model.textCode,
             walkThroughTarget: promptMap[model.targetCode],
             isLockedTarget: promptMap[(model).isLockedTargetCode],
             hasBeenUnlockedTarget: promptMap[(model).isUnlockedTargetCode],

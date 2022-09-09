@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '/logic/caching/caching_system.dart';
-import 'logic/prompt/prompt_notifier.dart';
-import 'views/initialization_view.dart';
-import 'views/options_view.dart';
-import 'views/misc/themes.dart';
-import '/views/game_view.dart';
-import 'views/main_view.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'views/game_view.dart';
+import 'views/initialization_view.dart';
+import 'views/main_view.dart';
+import 'views/misc/themes.dart';
+
+import 'logic/caching/caching_system.dart';
+import 'logic/gameplay/prompt/prompt_notifier.dart';
+import 'views/options_view.dart';
 
 ///
 /// Routes

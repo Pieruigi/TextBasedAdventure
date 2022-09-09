@@ -2,24 +2,24 @@ import 'package:flutter/foundation.dart';
 import 'package:textual_adventure/logic/caching/cacheUtil.dart';
 import 'package:textual_adventure/logic/interfaces/i_cacheable.dart';
 
-import '/logic/prompt/base_prompt.dart';
-import '../base_action.dart';
+import '../../prompt/game_prompt.dart';
+import '../game_action.dart';
 
 
 /// Use this action if you want to walk through door.
-class DoorAction extends BaseAction with ICacheable
+class DoorAction extends GameAction with ICacheable
 {
   /// Door it unlocked, walk through
-  final BasePrompt? walkThroughTarget;
+  final GamePrompt? walkThroughTarget;
 
   /// The door has been unlocked
-  final BasePrompt? hasBeenUnlockedTarget;
+  final GamePrompt? hasBeenUnlockedTarget;
 
   /// You failed to unlock the door ( maybe you are using the wrong key )
-  final BasePrompt? failedToUnlockTarget;
+  final GamePrompt? failedToUnlockTarget;
 
   /// You are trying to open a locked door with no key at all
-  final BasePrompt? isLockedTarget;
+  final GamePrompt? isLockedTarget;
 
   /// True if the door is locked.
   bool _locked = false;
@@ -30,21 +30,21 @@ class DoorAction extends BaseAction with ICacheable
   /// This should be loaded from the inventory
   String? _equippedKey;
 
-  DoorAction({required super.textCode, required super.hidden, required locked, this.walkThroughTarget, this.isLockedTarget, this.key, this.hasBeenUnlockedTarget, this.failedToUnlockTarget}) : _locked = locked;
+  DoorAction({required super.textId, required super.hidden, required locked, this.walkThroughTarget, this.isLockedTarget, this.key, this.hasBeenUnlockedTarget, this.failedToUnlockTarget}) : _locked = locked;
 
   /// Constructors
   /// The unlocked constructor needs only the walkThroughTarget prompt
   //DoorAction.unlocked(description, this.walkThroughTarget, {this.key, this.hasBeenUnlockedTarget, this.failedToUnlockTarget, this.isLockedTarget}) : _locked = false, super(description: description);
-  DoorAction.unlocked({required super.textCode, required this.walkThroughTarget, required super.hidden, this.key, this.hasBeenUnlockedTarget, this.failedToUnlockTarget, this.isLockedTarget}) : _locked = false;
+  DoorAction.unlocked({required super.textId, required this.walkThroughTarget, required super.hidden, this.key, this.hasBeenUnlockedTarget, this.failedToUnlockTarget, this.isLockedTarget}) : _locked = false;
   /// The locked constructor needs at least the isLockedTarget prompt
   //DoorAction.locked(description, this.isLockedTarget, {this.key, this.walkThroughTarget, this.hasBeenUnlockedTarget, this.failedToUnlockTarget }) : _locked = true, super(description: description);
-  DoorAction.locked({required super.textCode, required this.isLockedTarget, required super.hidden, this.key, this.walkThroughTarget, this.hasBeenUnlockedTarget, this.failedToUnlockTarget}) : _locked = true;
+  DoorAction.locked({required super.textId, required this.isLockedTarget, required super.hidden, this.key, this.walkThroughTarget, this.hasBeenUnlockedTarget, this.failedToUnlockTarget}) : _locked = true;
 
   /// Action implementation.
   /// We try to unlock the door if it is locked, otherwise we walk through.
   @override
   @protected
-  BasePrompt doActionImpl() {
+  GamePrompt doActionImpl() {
     // True if we are using a key
     bool usingKey = _equippedKey != null ? true : false;
     // True is the door is locked at the moment

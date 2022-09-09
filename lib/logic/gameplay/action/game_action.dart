@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import '/logic/caching/cacheUtil.dart';
 import '/logic/game_manager.dart';
 import '/logic/interfaces/i_cacheable.dart';
-import '/logic/prompt/base_prompt.dart';
+import '/logic/gameplay/prompt/game_prompt.dart';
 
 
 /// Any instance of this class represents an action the player can do.
 /// For example: open the door, take the gun, look around, speak with Peter and so on.
-abstract class BaseAction with ICacheable{
+abstract class GameAction with ICacheable{
 
   /// A list with all the actions
-  static final List<BaseAction> _list = [];
+  static final List<GameAction> _list = [];
 
   /// A short description telling the player what is going to do.
-  final String _textCode;
+  final int _textId;
 
   /// Is this action hidden?
   /// For example if you unlock a door this action may become hidden replaced by another than
@@ -21,10 +21,10 @@ abstract class BaseAction with ICacheable{
   bool _hidden = false;
 
   /// The target prompt.
-  late BasePrompt _targetPrompt;
+  late GamePrompt _targetPrompt;
 
   /// Constructor
-  BaseAction({required textCode, required hidden}) : _textCode = textCode, _hidden = hidden {
+  GameAction({required textId, required hidden}) : _textId = textId, _hidden = hidden {
 
     GameManager.instance.registerOnGameBuiltCallback(_init);
     GameManager.instance.registerOnGameReleasedCallback(_clear);
@@ -32,21 +32,21 @@ abstract class BaseAction with ICacheable{
     _list.add(this);
   }
 
-  String get description => _textCode;
+  int get textId => _textId;
 
   set hidden(bool value) => _hidden = value;
 
   ///
   /// Static methods
   ///
-  static int getActionIndex(BaseAction action){
+  static int getActionIndex(GameAction action){
     return _list.indexOf(action);
   }
 
   /// Implement this method in the child class.
   /// Returns the target prompt
   @protected
-  BasePrompt doActionImpl();
+  GamePrompt doActionImpl();
 
 
   ///
@@ -64,7 +64,7 @@ abstract class BaseAction with ICacheable{
   /// This method is call when the player choose this action
   void _updatePrompt(){
     // Set the current prompt
-    BasePrompt.setCurrent(_targetPrompt);
+    GamePrompt.setCurrent(_targetPrompt);
   }
 
   void _init(){
@@ -102,7 +102,7 @@ abstract class BaseAction with ICacheable{
 
     String ret = '';
 
-    ret += 'Description:$_textCode, Hidden:$_hidden\n';
+    ret += 'textId:$_textId, Hidden:$_hidden\n';
 
     return ret;
   }

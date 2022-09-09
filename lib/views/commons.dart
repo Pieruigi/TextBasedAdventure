@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-
 import '../logic/audio/audio_mixer.dart';
-import '../logic/audio/audio_player_data.dart';
-import '../logic/audio/audioclip.dart';
 import '../logic/prefs.dart';
 
 enum OptionType { musicVolume, fxVolume }

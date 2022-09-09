@@ -1,6 +1,7 @@
-import '/logic/action/base_action.dart';
+import '../action/game_action.dart';
+import '../prompt/game_prompt.dart';
 import '/logic/game_manager.dart';
-import '/logic/prompt/base_prompt.dart';
+
 
 /// This class map actions to a prompt in a way that you can activate or deactivate actions when the player enters or exits a specific
 /// prompt ( for example when you enter the prompt after you picked a key you can enable the action "use the key" to open a door.
@@ -9,13 +10,13 @@ class ActionController{
   static final List<ActionController> _list = [];
 
   /// The list of actions you want to activate when you enter or exit the prompt
-  final List<BaseAction>? activatingList;
+  final List<GameAction>? activatingList;
 
   /// The list of actions you want to deactivate when you enter or exit the prompt
-  final List<BaseAction>? deactivatingList;
+  final List<GameAction>? deactivatingList;
 
   /// The prompt you want the player to enter/exit in order to trigger this controller
-  final BasePrompt prompt;
+  final GamePrompt prompt;
 
   /// True if you want to trigger entering the prompt ( default )
   final bool triggerOnEnter;
@@ -48,7 +49,7 @@ class ActionController{
 
   }
 
-  void _activateAll(bool value, List<BaseAction> actions){
+  void _activateAll(bool value, List<GameAction> actions){
       for (var element in actions) {element.hidden = value;}
   }
 

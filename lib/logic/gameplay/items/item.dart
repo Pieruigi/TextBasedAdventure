@@ -1,6 +1,8 @@
-import '/logic/game_manager.dart';
 
- class Item{
+
+ import '../../game_manager.dart';
+
+class Item{
 
   static final List<Item> _list = [];
 

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:textual_adventure/logic/game_manager.dart';
-import 'package:textual_adventure/logic/prompt/base_prompt.dart';
+
+import '../../game_manager.dart';
+import 'game_prompt.dart';
 
 class PromptNotifier extends ChangeNotifier{
 
   static PromptNotifier? _instance;
 
-  BasePrompt? _current;
+  GamePrompt? _current;
 
   PromptNotifier._(){
     _instance ?? {
@@ -17,9 +18,9 @@ class PromptNotifier extends ChangeNotifier{
 
   static PromptNotifier get instance { _instance ?? PromptNotifier._(); return _instance!; }
 
-  BasePrompt get current => _current!;
+  GamePrompt get current => _current!;
 
-  void notify(BasePrompt prompt){
+  void notify(GamePrompt prompt){
     _current = prompt;
     notifyListeners();
   }

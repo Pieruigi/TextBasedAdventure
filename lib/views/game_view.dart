@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '/logic/prompt/base_prompt.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../logic/audio/audio_player_data.dart';
 import '../logic/caching/caching_system.dart';
 import '../logic/game_manager.dart';
-import '../logic/prompt/prompt_notifier.dart';
+import '../logic/gameplay/prompt/game_prompt.dart';
+import '../logic/gameplay/prompt/prompt_notifier.dart';
 import '../main.dart';
 import 'misc/themes.dart';
 import 'commons.dart';
@@ -120,7 +119,7 @@ class _PromptViewState extends State<PromptView> {
   @override
   Widget build(BuildContext context) {
 
-    BasePrompt prompt = context.watch<PromptNotifier>().current;
+    GamePrompt prompt = context.watch<PromptNotifier>().current;
 /*    debugPrint(AppLocalizations.of(context).toString());
     debugPrint(reflectFunction(debugPrint).call(['pippo']));*/
 
@@ -142,7 +141,7 @@ class _PromptViewState extends State<PromptView> {
               itemBuilder: (context, index) {
                 return TextButton(
                     onPressed: () => prompt.getActionByIndex(index).doAction(),
-                    child: Text(prompt.getActionByIndex(index).description),
+                    child: Text(prompt.getActionByIndex(index).textId.toString()), // Get from localization file instead
                 );
               },
           )

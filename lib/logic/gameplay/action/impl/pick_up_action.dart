@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 
-import '/logic/action/base_action.dart';
-import '/logic/prompt/base_prompt.dart';
+import '../../action/game_action.dart';
+import '../../prompt/game_prompt.dart';
 import '../../items/inventory.dart';
 
 /// This class represents the trigger that gives you the ability to pick up any item and store it in your
 /// inventory.
-class PickUpAction extends BaseAction{
+class PickUpAction extends GameAction{
 
-  final BasePrompt pickedUpTarget;
-  final BasePrompt? failedTarget;
+  final GamePrompt pickedUpTarget;
+  final GamePrompt? failedTarget;
 
   /// The id of the item you can pick up
   final int itemId;
 
   //PickUpAction(description, this.itemId, this.pickedUpTarget, this.failedTarget) : super(description: description);
-  PickUpAction({required super.textCode, required super.hidden, required this.itemId, required this.pickedUpTarget,  this.failedTarget});
+  PickUpAction({required super.textId, required super.hidden, required this.itemId, required this.pickedUpTarget,  this.failedTarget});
 
   @override
   @protected
-  BasePrompt doActionImpl() {
+  GamePrompt doActionImpl() {
     return pickUp() ? pickedUpTarget : failedTarget!;
   }
 
