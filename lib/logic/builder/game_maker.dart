@@ -1,5 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:textual_adventure/logic/builder/json/json_item.dart';
+import 'package:textual_adventure/logic/builder/models/action/pick_up_action_model.dart';
+import 'package:textual_adventure/logic/gameplay/action/impl/pick_up_action.dart';
+import 'package:textual_adventure/logic/gameplay/items/item.dart';
 import '../gameplay/action/game_action.dart';
 import '../gameplay/action/impl/common_action.dart';
 import '../gameplay/action/impl/door_action.dart';
@@ -14,6 +18,7 @@ import 'models/action/action_model_factory.dart';
 import 'models/action/game_action_model.dart';
 import 'models/action/common_action_model.dart';
 import 'models/action/door_action_model.dart';
+import 'models/item_model.dart';
 import 'models/prompt/game_prompt_model.dart';
 import 'models/prompt/common_prompt_model.dart';
 import 'models/prompt/prompt_model_factory.dart';
@@ -40,6 +45,8 @@ class GameMaker{
 
   }
 
+
+
   void _build(){
     debugPrint('Locale:$Locale');
 
@@ -49,9 +56,14 @@ class GameMaker{
     /// Texts
     List<Object> tmp = TextModel.fromJson(jsonDecode(jsonPromptText_it));
     tmp.addAll(TextModel.fromJson(jsonDecode(jsonActionText_it)));
+    //tmp.add(TextModel.fromJson(jsonDecode(json)))
     for (TextModel text in tmp.cast<TextModel>()) { GameText(code: text.code, content: text.content); }
 
     GameText.debug();
+
+    /// Items
+    tmp = ItemModel.fromJson(jsonDecode(jsonItem));
+    for (ItemModel model in tmp.cast<ItemModel>()) { Item(code: model.code, nameCode: model.nameCode, textCode: model.textCode); }
 
     /// Prompts
     tmp = PromptModelFactory.fromJson(jsonDecode(jsonPrompt));
@@ -88,7 +100,16 @@ class GameMaker{
           failedToUnlockTarget: model.failedTargetCode != null ? GamePrompt.getPromptByCode(model.failedTargetCode!) : null,
           locked: (model).locked.toString().toLowerCase() == 'true',
         );
-
+      }
+      if(model is PickUpActionModel){
+        PickUpAction(
+          code: model.code,
+          textCode: model.textCode,
+          hidden: model.hidden.toString().toLowerCase() == 'true',
+          item: Item.getItemByCode(model.itemCode),
+          pickedUpTarget: GamePrompt.getPromptByCode(model.targetCode),
+          failedTarget: model.failedTargetCode != null ? GamePrompt.getPromptByCode(model.failedTargetCode!) : null
+        );
       }
     }
 /*

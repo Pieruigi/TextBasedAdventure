@@ -21,11 +21,12 @@ const String initializationRoute = '/initialization';
 
 void main(){
 
-
   runApp(
         MultiProvider(
           providers: [
+            // Notify when a prompt changes ( a prompt is what the player is currently playing or seeing )
             ChangeNotifierProvider(create: (context) => PromptNotifier.instance),
+            // Notify when game is going to be saved
             ChangeNotifierProvider(create: (context) => CachingSystem.instance)
           ],
           child: const MyApp(),

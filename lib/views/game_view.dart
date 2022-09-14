@@ -119,7 +119,8 @@ class _PromptViewState extends State<PromptView> {
   @override
   Widget build(BuildContext context) {
 
-    GamePrompt prompt = context.watch<PromptNotifier>().current;
+    context.watch<PromptNotifier>();
+    GamePrompt prompt = GamePrompt.currentPrompt;
 /*    debugPrint(AppLocalizations.of(context).toString());
     debugPrint(reflectFunction(debugPrint).call(['pippo']));*/
 

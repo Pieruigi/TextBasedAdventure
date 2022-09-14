@@ -65,7 +65,7 @@ abstract class GameAction with ICacheable{
   /// This method is call when the player choose this action
   void _updatePrompt(){
     // Set the current prompt
-    GamePrompt.setCurrent(_targetPrompt);
+    GamePrompt.setCurrent(_targetPrompt, true);
   }
 
   void _init(){

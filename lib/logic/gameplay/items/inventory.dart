@@ -1,4 +1,6 @@
 
+import 'package:flutter/material.dart';
+
 import '../../caching/cacheUtil.dart';
 import '../../game_manager.dart';
 import '../../interfaces/i_cacheable.dart';
@@ -11,7 +13,7 @@ class Inventory with ICacheable{
   static Inventory? _instance;
 
   /// The list of items
-  final List<int> _itemIds = [];
+  final List<Item> _items = [];
 
   /// Maximum capacity
   final int _capacity = 20;
@@ -29,26 +31,26 @@ class Inventory with ICacheable{
   static Inventory get instance { _instance ?? Inventory._(); return _instance!; }
 
   /// Try to add a new item
-  bool add(int itemId){
+  bool add(Item item){
 
     // If there is no room return false...
-    if(_capacity == _itemIds.length){
+    if(_capacity == _items.length){
       return false;
     }
 
     //... otherwise add the new item and return true.
-    _itemIds.add(itemId);
+    _items.add(item);
 
     return true;
   }
 
   /// Remove an existing item: returns true if the item has been removed, otherwise false.
-  bool remove(int itemId){
-    return _itemIds.remove(itemId);
+  bool remove(Item item){
+    return _items.remove(item);
   }
 
   void _clear(){
-    _itemIds.clear();
+    _items.clear();
   }
 
   @override
@@ -64,7 +66,9 @@ class Inventory with ICacheable{
 
   @override
   String toCacheValue() {
-    return appendCache(_itemIds, null);
+    List<String> l = [];
+    for (var element in _items) { l.add(Item.getItemCode(element)); }
+    return appendCache(l, null);
   }
 
 

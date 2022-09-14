@@ -7,19 +7,26 @@ class Item{
   static final Map<String, Item> _map = {};
 
   /// The name of the item
-  final String name;
+  final String nameCode;
 
   /// A short description
-  final String description;
+  final String textCode;
 
   /// The weight
   final double weight;
 
-  Item({required String code, required this.name, this.description = '', this.weight = 0}) {
+  Item({required String code, required this.nameCode, this.textCode = '', this.weight = 0}) {
    GameManager.instance.registerOnGameReleasedCallback(_clear);
    _map[code] = this;
   }
 
+  static Item getItemByCode(String code){
+    return _map[code]!;
+  }
+
+  static String getItemCode(Item item){
+    return _map.keys.firstWhere((element) => _map[element] == item);
+  }
 
   ///
   /// Static methods

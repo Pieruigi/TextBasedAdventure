@@ -45,6 +45,7 @@ abstract class GamePrompt
   ///
   //static int get promptCount =>  _list.length;
   static int get promptCount =>  _map.length;
+  static GamePrompt get currentPrompt => _current!;
 
   ///
   /// Getters and setters
@@ -56,7 +57,7 @@ abstract class GamePrompt
   ///
   /// Static methods
   ///
-  static setCurrent(GamePrompt value) {
+  static setCurrent(GamePrompt value, bool notify) {
 
     // Call exit on the old prompt
     _current?.exit();
@@ -67,7 +68,10 @@ abstract class GamePrompt
     // Call enter on the new prompt
     _current!.enter();
 
-    PromptNotifier.instance.notify(_current!);
+    if(notify){
+      PromptNotifier.instance.notify();
+    }
+
   }
 
   static GamePrompt getPromptByCode(String code){
@@ -100,8 +104,9 @@ abstract class GamePrompt
   }
 
   void _init(){
+
     if(CachingSystem.instance.isCacheEmpty){
-      _map.values.first == this ? setCurrent(this) : null;
+      _map.values.first == this ? setCurrent(this, false) : null;
       //_list.indexOf(this) == 0 ? setCurrent(this) : (){};
     }
     else{
